@@ -18,7 +18,7 @@ class Mail extends Service
         $option     = Option::get();
         $recipients = $phpmailer->getAllRecipientAddresses();
 
-        if ($option['reroute']['status']) {
+        if ((bool) $option['reroute']['status']) {
             $phpmailer->clearAllRecipients();
 
             foreach ($option['reroute']['recipients'] as $recipient) {
@@ -26,7 +26,7 @@ class Mail extends Service
             }
         }
 
-        if ($option['log']['status']) {
+        if ((bool) $option['log']['status']) {
             // TODO: log emails in db
         }
     }
@@ -35,7 +35,7 @@ class Mail extends Service
     {
         $option = Option::get();
 
-        if ($option['reroute']['status'] && $option['reroute']['append']['status']) {
+        if ((bool) $option['reroute']['status'] && (bool) $option['reroute']['append']['status']) {
             $recipients = $args['to'];
 
             if (is_array($recipients)) {
