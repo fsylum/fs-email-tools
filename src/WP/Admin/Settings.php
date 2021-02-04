@@ -87,8 +87,6 @@ class Settings extends Service
         $is_valid = true;
         $data     = wp_parse_args($data, Option::$defaults);
 
-        error_log(print_r($data, true));
-
         // typecast status to boolean directly without validationg
         $data['reroute']['status']           = (bool) $data['reroute']['status'];
         $data['reroute']['append']['status'] = (bool) $data['reroute']['append']['status'];
@@ -147,7 +145,7 @@ class Settings extends Service
             <fieldset>
                 <label for="fs-email-tools-reroute-status">
                     <input name="<?php echo esc_attr(Option::KEY); ?>[reroute][status]" type="checkbox" id="fs-email-tools-reroute-status" value="1" <?php checked(true, $this->option['reroute']['status']); ?>>
-                    Reroute all outgoing emails
+                    Reroute all outgoing emails to the specified recipients
                 </label>
             </fieldset>
         <?php
@@ -163,7 +161,7 @@ class Settings extends Service
                     </label>
                 </p>
                 <p>
-                    <textarea name="<?php echo esc_attr(Option::KEY); ?>[reroute][recipients]" rows="10" id="fs-email-tools-reroute-recipients" class="regular-text" spellcheck="false"><?php echo implode("\r\n", $this->option['reroute']['recipients']); ?></textarea>
+                    <textarea name="<?php echo esc_attr(Option::KEY); ?>[reroute][recipients]" rows="10" id="fs-email-tools-reroute-recipients" class="regular-text" spellcheck="false"><?php echo implode("\r\n", $this->option['reroute']['recipients'] ?? []); ?></textarea>
                 </p>
                     <label>
                         <input name="<?php echo esc_attr(Option::KEY); ?>[reroute][append][status]" type="checkbox" id="fs-email-tools-reroute-append-status" value="1" <?php checked(true, $this->option['reroute']['append']['status']); ?>>
@@ -190,7 +188,7 @@ class Settings extends Service
             <fieldset>
                 <label>
                     <input name="<?php echo esc_attr(Option::KEY); ?>[log][status]" type="checkbox" id="fs-email-tools-log-status" value="1" <?php checked(true, $this->option['log']['status']); ?>>
-                    Log all outgoing emails
+                    Log all outgoing emails into the database
                 </label>
             </fieldset>
         <?php

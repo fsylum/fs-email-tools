@@ -61,7 +61,7 @@ class Page extends Service
     {
         return [
             'settings'       => 'Settings',
-            'database-logs'  => 'Database Logs',
+            'email-logs'     => 'Email Logs',
             'disable-emails' => 'Disable Internal Emails',
             'test-email'     => 'Send Test Email',
         ];

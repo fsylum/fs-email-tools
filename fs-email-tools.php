@@ -20,6 +20,8 @@ require __DIR__ . '/vendor/autoload.php';
 define('FS_EMAIL_TOOLS_PLUGIN_URL', untrailingslashit(plugin_dir_url(__FILE__)));
 define('FS_EMAIL_TOOLS_PLUGIN_PATH', untrailingslashit(plugin_dir_path(__FILE__)));
 
+register_activation_hook(__FILE__, [Fsylum\EmailTools\WP\Database::class, 'install']);
+
 $plugin = new Fsylum\EmailTools\Plugin;
 
 $plugin->addService(Fsylum\EmailTools\WP\Mail::class);

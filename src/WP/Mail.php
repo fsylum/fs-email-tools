@@ -4,6 +4,7 @@ namespace Fsylum\EmailTools\WP;
 
 use Fsylum\EmailTools\Service;
 use Fsylum\EmailTools\WP\Option;
+use Fsylum\EmailTools\Models\Log;
 
 class Mail extends Service
 {
@@ -15,8 +16,11 @@ class Mail extends Service
 
     public function interceptOutgoingEmails(&$phpmailer)
     {
-        $option     = Option::get();
-        $recipients = $phpmailer->getAllRecipientAddresses();
+        $option = Option::get();
+
+        if ((bool) $option['log']['status']) {
+            (new Log)->insert($phpmailer);
+        }
 
         if ((bool) $option['reroute']['status']) {
             $phpmailer->clearAllRecipients();
@@ -24,10 +28,6 @@ class Mail extends Service
             foreach ($option['reroute']['recipients'] as $recipient) {
                 $phpmailer->addAddress(sanitize_email($recipient));
             }
-        }
-
-        if ((bool) $option['log']['status']) {
-            // TODO: log emails in db
         }
     }
 
