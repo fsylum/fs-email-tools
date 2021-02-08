@@ -17,10 +17,12 @@ class Log
         $subject        = $phpmailer->Subject;
         $message        = $phpmailer->Body;
         $attachments    = $this->parseAttachments($phpmailer->getAttachments());
+        $headers        = $phpmailer->createHeader();
+        $created_at     = current_time('mysql', true);
 
         $wpdb->insert(
             $wpdb->prefix . Database::TABLE,
-            compact('recipients_to', 'recipients_cc', 'recipients_bcc', 'subject', 'message', 'attachments'),
+            compact('recipients_to', 'recipients_cc', 'recipients_bcc', 'subject', 'message', 'attachments', 'headers', 'created_at'),
             '%s'
         );
     }

@@ -2,21 +2,20 @@
 
 namespace Fsylum\EmailTools\WP\Admin;
 
-use Fsylum\EmailTools\Plugin;
-use Fsylum\EmailTools\Service;
+use Fsylum\EmailTools\Helper;
 use Fsylum\EmailTools\WP\Option;
+use Fsylum\EmailTools\WP\Admin\Page;
+use Fsylum\EmailTools\Contracts\Service;
 
-class Settings extends Service
+class Settings implements Service
 {
     const KEY = 'fs-email-tools';
 
     protected $option;
 
-    public function __construct(Plugin $plugin)
+    public function __construct()
     {
         $this->option = Option::get();
-
-        parent::__construct($plugin);
     }
 
     public function run()
@@ -30,7 +29,7 @@ class Settings extends Service
             self::KEY,
             Option::KEY,
             [
-                'type' => 'array',
+                'type'              => 'array',
                 'sanitize_callback' => [$this, 'validateAndSanitize'],
             ],
         );
@@ -39,14 +38,14 @@ class Settings extends Service
             'fs_email_tools_section_reroute',
             __('Email Rerouting', 'fs-email-tools'),
             [$this, 'displayRerouteSection'],
-            $this->plugin::SLUG
+            Page::KEY
         );
 
         add_settings_field(
             'fs_email_tools_section_reroute_status',
             __('Status', 'fs-email-tools'),
             [$this, 'displayRerouteStatusField'],
-            $this->plugin::SLUG,
+            Page::KEY,
             'fs_email_tools_section_reroute'
         );
 
@@ -54,7 +53,7 @@ class Settings extends Service
             'fs_email_tools_section_reroute_recipients',
             __('Recipients', 'fs-email-tools'),
             [$this, 'displayRerouteRecipientsField'],
-            $this->plugin::SLUG,
+            Page::KEY,
             'fs_email_tools_section_reroute'
         );
 
@@ -62,14 +61,14 @@ class Settings extends Service
             'fs_email_tools_section_database_logs',
             __('Database Logs', 'fs-email-tools'),
             [$this, 'displayDatabaseLogsSection'],
-            $this->plugin::SLUG
+            Page::KEY
         );
 
         add_settings_field(
             'fs_email_tools_section_database_logs_status',
             __('Status', 'fs-email-tools'),
             [$this, 'displayDatabaseLogsStatusField'],
-            $this->plugin::SLUG,
+            Page::KEY,
             'fs_email_tools_section_database_logs'
         );
 
@@ -77,12 +76,35 @@ class Settings extends Service
             'fs_email_tools_section_database_logs_validity',
             __('Validity', 'fs-email-tools'),
             [$this, 'displayDatabaseLogsValidityField'],
-            $this->plugin::SLUG,
+            Page::KEY,
             'fs_email_tools_section_database_logs'
+        );
+
+        add_settings_section(
+            'fs_email_tools_section_bcc',
+            __('Automatic BCC', 'fs-email-tools'),
+            [$this, 'displayAutomaticBCCSection'],
+            Page::KEY
+        );
+
+        add_settings_field(
+            'fs_email_tools_section_bcc_status',
+            __('Status', 'fs-email-tools'),
+            [$this, 'displayAutomaticBCCStatusField'],
+            Page::KEY,
+            'fs_email_tools_section_bcc'
+        );
+
+        add_settings_field(
+            'fs_email_tools_section_bcc_recipients',
+            __('Recipients', 'fs-email-tools'),
+            [$this, 'displayAutomaticBCCRecipientsField'],
+            Page::KEY,
+            'fs_email_tools_section_bcc'
         );
     }
 
-    public function validateAndSanitize($data)
+    public function validateAndSanitize(array $data = [])
     {
         $is_valid = true;
         $data     = wp_parse_args($data, Option::$defaults);
@@ -92,19 +114,17 @@ class Settings extends Service
         $data['reroute']['append']['status'] = (bool) $data['reroute']['append']['status'];
         $data['log']['status']               = (bool) $data['log']['status'];
         $data['log']['keep_indefinitely']    = (bool) $data['log']['keep_indefinitely'];
-
-        // validate each recipients to be a valid email
-        $data['reroute']['recipients'] = explode("\n", str_replace("\r", '', $data['reroute']['recipients']));
-        $data['reroute']['recipients'] = array_filter($data['reroute']['recipients']);
-        $data['reroute']['recipients'] = array_map('sanitize_email', $data['reroute']['recipients']);
+        $data['bcc']['status']               = (bool) $data['bcc']['status'];
+        $data['reroute']['recipients']       = Helper::sanitizeEmailsFromTextarea($data['reroute']['recipients']);
+        $data['bcc']['recipients']           = Helper::sanitizeEmailsFromTextarea($data['bcc']['recipients']);
 
         if ($data['reroute']['status']) {
             if (empty($data['reroute']['recipients'])) {
-                add_settings_error(self::KEY, 'fs_email_tools_missing_email', 'Please specify the recipient(s) email address');
+                add_settings_error(self::KEY, 'fs_email_tools_missing_email', 'Please specify the recipient(s) email address for email rerouting');
             } else {
                 foreach ($data['reroute']['recipients'] as $recipient) {
                     if (!is_email($recipient)) {
-                        add_settings_error(self::KEY, 'fs_email_tools_invalid_email', sprintf(__('Invalid email address: %s', 'fs-email-tools'), $recipient));
+                        add_settings_error(self::KEY, 'fs_email_tools_invalid_email', sprintf(__('Invalid email address for email rerouting: %s', 'fs-email-tools'), $recipient));
 
                         $is_valid = false;
                     }
@@ -124,6 +144,20 @@ class Settings extends Service
             $is_valid = false;
         }
 
+        if ($data['bcc']['status']) {
+            if (empty($data['bcc']['recipients'])) {
+                add_settings_error(self::KEY, 'fs_email_tools_missing_email', 'Please specify the recipient(s) email address for automatic BCC');
+            } else {
+                foreach ($data['bcc']['recipients'] as $recipient) {
+                    if (!is_email($recipient)) {
+                        add_settings_error(self::KEY, 'fs_email_tools_invalid_email', sprintf(__('Invalid email address for automatic BCC: %s', 'fs-email-tools'), $recipient));
+
+                        $is_valid = false;
+                    }
+                }
+            }
+        }
+
         // If any of the validation fails, replace the updated $data with the original options stored in the database
         if (!$is_valid) {
             $data = $this->option;
@@ -132,7 +166,7 @@ class Settings extends Service
         return $data;
     }
 
-    public function displayRerouteSection($args)
+    public function displayRerouteSection(array $args = [])
     {
         ?>
             <p id="<?php echo esc_attr($args['id']); ?>"><?php esc_html_e('Email rerouting is a feature to reroute all of your outgoing email from this site to a different set of recipients.', 'fs-email-tools'); ?></p>
@@ -175,7 +209,7 @@ class Settings extends Service
         <?php
     }
 
-    public function displayDatabaseLogsSection($args)
+    public function displayDatabaseLogsSection(array $args = [])
     {
         ?>
             <p id="<?php echo esc_attr($args['id']); ?>"><?php esc_html_e('Database logs feature allows you to store a copy of all outgoing emails in your database so that you can view it again at a later time.'); ?></p>
@@ -210,6 +244,41 @@ class Settings extends Service
                 </p>
                 <p>
                     <label><input name="<?php echo esc_attr(Option::KEY); ?>[log][keep_indefinitely]" type="radio" value="1" class="tog fs-email-tools-log-keep-indefinitely" <?php checked(true, $this->option['log']['keep_indefinitely']); ?>> Keep email logs indefinitely</label>
+                </p>
+            </fieldset>
+        <?php
+    }
+
+    public function displayAutomaticBCCSection(array $args = [])
+    {
+        ?>
+            <p id="<?php echo esc_attr($args['id']); ?>"><?php esc_html_e('This feature allows you to automatically set a list of email address as BCC for your outgoing emails.'); ?></p>
+        <?php
+    }
+
+    public function displayAutomaticBCCStatusField()
+    {
+        ?>
+            <fieldset>
+                <label>
+                    <input name="<?php echo esc_attr(Option::KEY); ?>[bcc][status]" type="checkbox" id="fs-email-tools-bcc-status" value="1" <?php checked(true, $this->option['bcc']['status']); ?>>
+                    Automatically add BCC to all outgoing emails
+                </label>
+            </fieldset>
+        <?php
+    }
+
+    public function displayAutomaticBCCRecipientsField()
+    {
+        ?>
+            <fieldset>
+                <p>
+                    <label>
+                        Fill in the recipients to be used as BCC.
+                    </label>
+                </p>
+                <p>
+                    <textarea name="<?php echo esc_attr(Option::KEY); ?>[bcc][recipients]" rows="10" id="fs-email-tools-bcc-recipients" class="regular-text" spellcheck="false"><?php echo implode("\r\n", $this->option['bcc']['recipients'] ?? []); ?></textarea>
                 </p>
             </fieldset>
         <?php

@@ -23,6 +23,7 @@ class Database
             subject tinytext NOT NULL,
             message longtext NOT NULL,
             attachments longtext DEFAULT NULL,
+            headers longtext DEFAULT NULL,
             created_at datetime DEFAULT NOW() NOT NULL,
             PRIMARY KEY  (id)
         ) $charset_collate;";

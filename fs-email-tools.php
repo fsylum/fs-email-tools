@@ -3,7 +3,7 @@
 /**
  * Plugin Name:         Email Tools
  * Plugin URI:          https://github.com/fsylum/wp-email-tools
- * Description:         Collection of tools to interact with emails in WordPress including email rerouting, outgoing email logging to database and selectively disabling WordPress default emails.
+ * Description:         Collection of tools to interact with emails in WordPress including email rerouting, outgoing email logging to database and automatic BCC to specified email address.
  * Author:              Firdaus Zahari
  * Author URI:          https://fsylum.net
  * License:             GPL v2 or later
@@ -24,9 +24,9 @@ register_activation_hook(__FILE__, [Fsylum\EmailTools\WP\Database::class, 'insta
 
 $plugin = new Fsylum\EmailTools\Plugin;
 
-$plugin->addService(Fsylum\EmailTools\WP\Mail::class);
-$plugin->addService(Fsylum\EmailTools\WP\Asset::class);
-$plugin->addService(Fsylum\EmailTools\WP\Admin\Page::class);
-$plugin->addService(Fsylum\EmailTools\WP\Admin\Settings::class);
+$plugin->addService(new Fsylum\EmailTools\WP\Mail);
+$plugin->addService(new Fsylum\EmailTools\WP\Asset);
+$plugin->addService(new Fsylum\EmailTools\WP\Admin\Page);
+$plugin->addService(new Fsylum\EmailTools\WP\Admin\Settings);
 
 $plugin->run();

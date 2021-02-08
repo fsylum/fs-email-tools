@@ -2,11 +2,11 @@
 
 namespace Fsylum\EmailTools\WP;
 
-use Fsylum\EmailTools\Service;
 use Fsylum\EmailTools\WP\Option;
 use Fsylum\EmailTools\Models\Log;
+use Fsylum\EmailTools\Contracts\Service;
 
-class Mail extends Service
+class Mail implements Service
 {
     public function run()
     {
@@ -31,7 +31,7 @@ class Mail extends Service
         }
     }
 
-    public function modifyOutgoingEmails($args)
+    public function modifyOutgoingEmails(array $args = [])
     {
         $option = Option::get();
 

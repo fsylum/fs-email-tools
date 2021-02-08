@@ -20,6 +20,10 @@ class Option
             'keep_indefinitely' => false,
             'keep_in_days'      => 7,
         ],
+        'bcc' => [
+            'status'     => false,
+            'recipients' => [],
+        ],
     ];
 
     public static function get()

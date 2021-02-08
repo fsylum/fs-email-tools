@@ -2,10 +2,10 @@
 
 namespace Fsylum\EmailTools\WP;
 
-use Fsylum\EmailTools\Service;
-use Fsylum\EmailTools\WP\Admin\Settings;
+use Fsylum\EmailTools\WP\Admin\Page;
+use Fsylum\EmailTools\Contracts\Service;
 
-class Asset extends Service
+class Asset implements Service
 {
     const KEY     = 'fs-email-tools-asset';
     const VERSION = '0.1.0';
@@ -15,9 +15,9 @@ class Asset extends Service
         add_action('admin_enqueue_scripts', [$this, 'loadAssets']);
     }
 
-    public function loadAssets($hook)
+    public function loadAssets(string $hook)
     {
-        if ($hook !== 'tools_page_' . Settings::KEY) {
+        if ($hook !== 'tools_page_' . Page::KEY) {
             return;
         }
 

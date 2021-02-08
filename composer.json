@@ -1,6 +1,6 @@
 {
     "name": "fsylum/wp-email-tools",
-    "description": "Collection of tools to interact with emails in WordPress including email rerouting, outgoing email logging to database and selectively disabling WordPress default emails.",
+    "description": "Collection of tools to interact with emails in WordPress including email rerouting, outgoing email logging to database and automatic BCC to specified email address.",
     "type": "wordpress-plugin",
     "authors": [
         {

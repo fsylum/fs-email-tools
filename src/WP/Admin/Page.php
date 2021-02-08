@@ -2,10 +2,13 @@
 
 namespace Fsylum\EmailTools\WP\Admin;
 
-use Fsylum\EmailTools\Service;
+use Fsylum\EmailTools\Contracts\Service;
 
-class Page extends Service
+class Page implements Service
 {
+    const CAPABILITY = 'manage_options';
+    const KEY        = 'fs-email-tools';
+
     public function run()
     {
         add_action('admin_menu', [$this, 'addPage']);
@@ -14,19 +17,17 @@ class Page extends Service
 
     public function addPage()
     {
-        add_management_page(__('Email Tools', 'fs-email-tools'), __('Email Tools', 'fs-email-tools'), $this->plugin::CAPABILITY, $this->plugin::SLUG, [$this, 'pageDisplay']);
+        add_management_page(__('Email Tools', 'fs-email-tools'), __('Email Tools', 'fs-email-tools'), self::CAPABILITY, self::KEY, [$this, 'displayPage']);
     }
 
-    public function pageDisplay()
+    public function displayPage()
     {
-        if (!current_user_can($this->plugin::CAPABILITY)) {
+        if (!current_user_can(self::CAPABILITY)) {
             return;
         }
 
         $all_tabs    = $this->tabs();
-        $default_tab = array_keys($all_tabs);
-        $default_tab = array_shift($default_tab);
-        $current_tab = !empty($_GET['tab']) && in_array($_GET['tab'], array_keys($all_tabs)) ? sanitize_key($_GET['tab']) : $default_tab;
+        $current_tab = !empty($_GET['tab']) && in_array($_GET['tab'], array_keys($all_tabs)) ? sanitize_key($_GET['tab']) : array_keys($all_tabs)[0];
 
         if (isset($_GET['settings-updated']) && empty(get_settings_errors(Settings::KEY))) {
             add_settings_error(Settings::KEY, 'fs_email_tools_status', __( 'Settings saved.', 'fs-email-tools' ), 'updated');
@@ -41,7 +42,6 @@ class Page extends Service
         }
 
         settings_errors(Settings::KEY);
-
         ?>
             <div class="wrap">
                 <h1><?php echo esc_html(get_admin_page_title()); ?></h1>
@@ -60,18 +60,17 @@ class Page extends Service
     private function tabs()
     {
         return [
-            'settings'       => 'Settings',
-            'email-logs'     => 'Email Logs',
-            'disable-emails' => 'Disable Internal Emails',
-            'test-email'     => 'Send Test Email',
+            'settings'   => 'Settings',
+            'email-logs' => 'Email Logs',
+            'test-email' => 'Send Test Email',
         ];
     }
 
-    private function tabUrl($tab)
+    private function tabUrl(string $tab)
     {
         return add_query_arg([
-            'page' => $this->plugin::SLUG,
-            'tab' => $tab,
+            'page' => self::KEY,
+            'tab'  => $tab,
         ], admin_url('tools.php'));
     }
 

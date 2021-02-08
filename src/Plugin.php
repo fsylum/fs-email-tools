@@ -2,9 +2,7 @@
 
 namespace Fsylum\EmailTools;
 
-use ReflectionClass;
-use InvalidArgumentException;
-use Fsylum\EmailTools\Service;
+use Fsylum\EmailTools\Contracts\Service;
 
 class Plugin
 {
@@ -13,19 +11,15 @@ class Plugin
 
     protected $services = [];
 
-    public function addService($service)
+    public function addService(Service $service)
     {
-        if (!(new ReflectionClass($service))->isSubclassOf(Service::class)) {
-            throw new InvalidArgumentException;
-        }
-
         $this->services[] = $service;
     }
 
     public function run()
     {
         foreach ($this->services as $service) {
-            (new $service($this))->run();
+            (new $service)->run();
         }
     }
 }
