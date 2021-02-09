@@ -19,7 +19,7 @@ class Mail implements Service
         $option = Option::get();
 
         if ((bool) $option['log']['status']) {
-            (new Log)->insert($phpmailer);
+            (new Log)->insertFromPHPMailer($phpmailer);
         }
 
         if ((bool) $option['reroute']['status']) {

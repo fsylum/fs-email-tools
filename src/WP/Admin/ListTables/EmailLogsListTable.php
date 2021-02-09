@@ -15,7 +15,7 @@ class EmailLogsListTable extends WP_List_Table
     public function prepare_items()
     {
         $this->_column_headers = array($this->get_columns(), [], $this->get_sortable_columns());
-        $result                = $this->getItems($_REQUEST);
+        $result                = $this->getEmailLogs($_REQUEST);
         $this->items           = $result['items'];
 
         $this->set_pagination_args(
@@ -111,7 +111,7 @@ class EmailLogsListTable extends WP_List_Table
         ];
     }
 
-    private function getItems(array $args = [])
+    private function getEmailLogs(array $args = [])
     {
         global $wpdb;
 
@@ -123,7 +123,7 @@ class EmailLogsListTable extends WP_List_Table
         ]);
 
         $args['orderby'] = in_array($args['orderby'], ['subject', 'created_at']) ? $args['orderby'] : 'created_at';
-        $args['order']   = in_array($args['order'], ['ASC', 'DESC']) ? $args['order'] : 'DESC';
+        $args['order']   = in_array($args['order'], ['asc', 'desc']) ? strtoupper($args['order']) : 'DESC';
 
         $page        = max(1, absint($args['paged']));
         $start       = ($page - 1) * self::PER_PAGE;

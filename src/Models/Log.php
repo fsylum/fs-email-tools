@@ -7,7 +7,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 
 class Log
 {
-    public function insert(PHPMailer $phpmailer)
+    public function insertFromPHPMailer(PHPMailer $phpmailer)
     {
         global $wpdb;
 
