@@ -51,16 +51,6 @@ class EmailLogsListTable extends WP_List_Table
 
     public function column_subject($item)
     {
-        $view_url = add_query_arg(
-            [
-                'page'   => Page::KEY,
-                'tab'    => 'email-logs',
-                'action' => 'view',
-                'id'     => $item['id'],
-            ],
-            admin_url('tools.php')
-        );
-
         $delete_url = add_query_arg(
             [
                 'page'     => Page::KEY,
@@ -73,8 +63,8 @@ class EmailLogsListTable extends WP_List_Table
         );
 
         $actions = [
-            'view'   => sprintf('<a href="%s">View</a>', $view_url),
-            'delete' => sprintf('<a href="%s">Delete</a>', $delete_url),
+            'view'   => '<a href="#">View</a>',
+            'delete' => sprintf('<a href="%s" class="js-delete-email-log">Delete</a>', $delete_url),
         ];
 
         return sprintf('%s %s', $item['subject'], $this->row_actions($actions) );
@@ -117,7 +107,7 @@ class EmailLogsListTable extends WP_List_Table
 
         $args = wp_parse_args($args, [
             'paged'   => 1,
-            'search'  => '',
+            's'       => '',
             'orderby' => 'created_at',
             'order'   => 'DESC',
         ]);
@@ -128,10 +118,22 @@ class EmailLogsListTable extends WP_List_Table
         $page        = max(1, absint($args['paged']));
         $start       = ($page - 1) * self::PER_PAGE;
         $table       = $wpdb->prefix . Database::TABLE;
-        $total_items = $wpdb->get_var("SELECT count(id) FROM {$table}");
+
+        if (empty($args['s'])) {
+            $where_query = '1=1';
+        } else {
+            $where_query = $wpdb->prepare(
+                'recipients_to LIKE %s OR subject LIKE %s OR message LIKE %s',
+                '%'. $wpdb->esc_like($args['s']) . '%',
+                '%'. $wpdb->esc_like($args['s']) . '%',
+                '%'. $wpdb->esc_like($args['s']) . '%'
+            );
+        }
+
+        $total_items = $wpdb->get_var("SELECT count(id) FROM {$table} WHERE {$where_query} ");
         $items       = $wpdb->get_results(
             $wpdb->prepare(
-                "SELECT SQL_CALC_FOUND_ROWS id, recipients_to, subject, created_at FROM {$table} ORDER BY {$args['orderby']} {$args['order']} LIMIT %d,%d",
+                "SELECT id, recipients_to, subject, created_at FROM {$table} WHERE {$where_query} ORDER BY {$args['orderby']} {$args['order']} LIMIT %d,%d",
                 $start,
                 self::PER_PAGE
             ),

@@ -35,5 +35,24 @@
 
             $('#fs-email-tools-log-keep-in-days').prop('disabled', (checkedValue == 1 || !isLogEnabled));
         }).change();
+
+        $('.js-delete-email-log').on('click', function (e) {
+            e.preventDefault();
+
+            $('#fs-email-tools-dialog-delete').dialog({
+                resizable: false,
+                height: "auto",
+                width: 400,
+                modal: true,
+                buttons: {
+                    Cancel: function() {
+                        $(this).dialog('close');
+                    },
+                    Confirm: function() {
+                        $(this).dialog('close');
+                    },
+                }
+            });
+        });
     });
 })(jQuery);

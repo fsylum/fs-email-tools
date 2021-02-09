@@ -22,9 +22,16 @@ class Asset implements Service
         }
 
         wp_enqueue_script(
-            self::KEY . '-js-app',
-            FS_EMAIL_TOOLS_PLUGIN_URL . '/assets/dist/js/app.js',
-            ['jquery'],
+            self::KEY . '-js-admin',
+            FS_EMAIL_TOOLS_PLUGIN_URL . '/assets/dist/js/admin.js',
+            ['jquery', 'jquery-ui-dialog'],
+            wp_get_environment_type() === 'production' ? self::VERSION : time()
+        );
+
+        wp_enqueue_style(
+            self::KEY . '-css-admin',
+            FS_EMAIL_TOOLS_PLUGIN_URL . '/assets/dist/css/admin.css',
+            ['wp-jquery-ui-dialog'],
             wp_get_environment_type() === 'production' ? self::VERSION : time()
         );
     }
