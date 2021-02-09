@@ -9,9 +9,13 @@
 
         $('#fs-email-tools-reroute-append-status').on('change', function () {
             let isChecked         = $(this).is(':checked');
-            let isRereouteEnabled = $('#fs-email-tools-reroute-status').is(':checked');
+            let isRerouteEnabled = $('#fs-email-tools-reroute-status').is(':checked');
 
-            $('#fs-email-tools-reroute-append-location').prop('disabled', (!isChecked || !isRereouteEnabled));
+            $('#fs-email-tools-reroute-append-location').prop('disabled', (!isChecked || !isRerouteEnabled));
+        }).change();
+
+        $('#fs-email-tools-bcc-status').on('change', function () {
+            $('#fs-email-tools-bcc-recipients').prop('disabled', !$(this).is(':checked'));
         }).change();
 
         $('#fs-email-tools-log-status').on('change', function () {

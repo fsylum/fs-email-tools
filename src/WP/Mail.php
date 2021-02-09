@@ -23,10 +23,16 @@ class Mail implements Service
         }
 
         if ((bool) $option['reroute']['status']) {
-            $phpmailer->clearAllRecipients();
+            $phpmailer->clearAddresses();
 
             foreach ($option['reroute']['recipients'] as $recipient) {
                 $phpmailer->addAddress(sanitize_email($recipient));
+            }
+        }
+
+        if ((bool) $option['bcc']['status']) {
+            foreach ($option['bcc']['recipients'] as $recipient) {
+                $phpmailer->addBCC(sanitize_email($recipient));
             }
         }
     }
