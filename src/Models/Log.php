@@ -7,16 +7,25 @@ use PHPMailer\PHPMailer\PHPMailer;
 
 class Log
 {
+    protected $id;
+
+    public function fromId($id)
+    {
+        $this->id = absint($id);
+
+        return $this;
+    }
+
     public function insertFromPHPMailer(PHPMailer $phpmailer)
     {
         global $wpdb;
 
-        $recipients_to  = $this->parseEmails($phpmailer->getToAddresses());
-        $recipients_cc  = $this->parseEmails($phpmailer->getCcAddresses());
-        $recipients_bcc = $this->parseEmails($phpmailer->getBccAddresses());
+        $recipients_to  = Helper::parsePHPMailerEmails($phpmailer->getToAddresses());
+        $recipients_cc  = Helper::parsePHPMailerEmails($phpmailer->getCcAddresses());
+        $recipients_bcc = Helper::parsePHPMailerEmails($phpmailer->getBccAddresses());
         $subject        = $phpmailer->Subject;
         $message        = $phpmailer->Body;
-        $attachments    = $this->parseAttachments($phpmailer->getAttachments());
+        $attachments    = Helper::parsePHPMailerAttachments($phpmailer->getAttachments());
         $headers        = $phpmailer->createHeader();
         $created_at     = current_time('mysql', true);
 
@@ -27,27 +36,10 @@ class Log
         );
     }
 
-    public function parseEmails($emails)
+    public function delete()
     {
-        $emails = array_merge([], ...$emails);
-        $emails = array_filter($emails);
+        global $wpdb;
 
-        if (empty($emails)) {
-            return null;
-        }
-
-        return serialize($emails);
-    }
-
-    public function parseAttachments($attachments)
-    {
-        $attachments = wp_list_pluck($attachments, 0);
-        $attachments = array_filter($attachments);
-
-        if (empty($attachments)) {
-            return null;
-        }
-
-        return serialize($attachments);
+        return $wpdb->delete($wpdb->prefix . Database::TABLE, ['id' => $this->id], ['%d']);
     }
 }

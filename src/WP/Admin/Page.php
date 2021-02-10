@@ -2,6 +2,7 @@
 
 namespace Fsylum\EmailTools\WP\Admin;
 
+use Fsylum\EmailTools\Models\Log;
 use Fsylum\EmailTools\Contracts\Service;
 
 class Page implements Service
@@ -13,6 +14,7 @@ class Page implements Service
     {
         add_action('admin_menu', [$this, 'addPage']);
         add_action('admin_post_fs_email_tools_send_test_email', [$this, 'sendTestEmail']);
+        add_action('admin_post_fs_email_tools_delete_email_log', [$this, 'deleteEmailLog']);
     }
 
     public function addPage()
@@ -29,16 +31,32 @@ class Page implements Service
         $all_tabs    = $this->tabs();
         $current_tab = !empty($_GET['tab']) && in_array($_GET['tab'], array_keys($all_tabs)) ? sanitize_key($_GET['tab']) : array_keys($all_tabs)[0];
 
-        if (isset($_GET['settings-updated']) && empty(get_settings_errors(Settings::KEY))) {
-            add_settings_error(Settings::KEY, 'fs_email_tools_status', __( 'Settings saved.', 'fs-email-tools' ), 'updated');
-        }
+        switch ($current_tab) {
+            case 'settings':
+                if (isset($_GET['settings-updated']) && empty(get_settings_errors(Settings::KEY))) {
+                    add_settings_error(Settings::KEY, 'fs_email_tools_status', __( 'Settings saved.', 'fs-email-tools' ), 'updated');
+                }
+                break;
 
-        if ($current_tab === 'test-email' && isset($_GET['sent'])) {
-            if (sanitize_text_field($_GET['sent']) === 'yes') {
-                add_settings_error(Settings::KEY, 'fs_email_tools_status', __( 'Test email is successfully sent.', 'fs-email-tools' ), 'updated');
-            } else {
-                add_settings_error(Settings::KEY, 'fs_email_tools_status', __( 'Failed to send test email.', 'fs-email-tools' ));
-            }
+            case 'test-email':
+                if (isset($_GET['sent'])) {
+                    if (sanitize_key($_GET['sent']) === 'yes') {
+                        add_settings_error(Settings::KEY, 'fs_email_tools_status', __( 'Test email is successfully sent.', 'fs-email-tools' ), 'updated');
+                    } else {
+                        add_settings_error(Settings::KEY, 'fs_email_tools_status', __( 'Failed to send test email.', 'fs-email-tools' ));
+                    }
+                }
+                break;
+
+            case 'email-logs':
+                if (isset($_GET['deleted'])) {
+                    if (sanitize_key($_GET['deleted']) === 'yes') {
+                        add_settings_error(Settings::KEY, 'fs_email_tools_status', __( 'The email log has been successfully deleted.', 'fs-email-tools' ), 'updated');
+                    } else {
+                        add_settings_error(Settings::KEY, 'fs_email_tools_status', __( 'Failed to delete email log. Please try again.', 'fs-email-tools' ));
+                    }
+                }
+                break;
         }
 
         settings_errors(Settings::KEY);
@@ -86,11 +104,32 @@ class Page implements Service
 
         $result = wp_mail($to, $subject, $message);
 
-        wp_redirect(
+        wp_safe_redirect(
             add_query_arg([
                 'sent' => $result ? 'yes' : 'no',
             ], $this->tabUrl('test-email'))
         );
+        exit;
+    }
+
+    public function deleteEmailLog()
+    {
+        if (!wp_verify_nonce($_REQUEST['_wpnonce'], 'fs-email-tools-delete-nonce')) {
+            wp_die('Invalid request');
+        }
+
+        $result   = (new Log)->fromId(absint($_REQUEST['id']))->delete();
+        $redirect = $_SERVER['HTTP_REFERER'];
+
+        if (empty($redirect)) {
+            $redirect = $this->tabUrl('email-logs');
+        }
+
+        $redirect = add_query_arg([
+            'deleted' => $result ? 'yes' : 'no',
+        ], $redirect);
+
+        wp_safe_redirect($redirect);
         exit;
     }
 }

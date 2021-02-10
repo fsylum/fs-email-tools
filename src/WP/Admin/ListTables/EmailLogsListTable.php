@@ -51,20 +51,14 @@ class EmailLogsListTable extends WP_List_Table
 
     public function column_subject($item)
     {
-        $delete_url = add_query_arg(
-            [
-                'page'     => Page::KEY,
-                'tab'      => 'email-logs',
-                'action'   => 'delete',
-                'id'       => $item['id'],
-                '_wpnonce' => wp_create_nonce('fs-email-tools-delete-email-log'),
-            ],
-            admin_url('tools.php')
-        );
+        $delete_url = add_query_arg([
+            'action' => 'fs_email_tools_delete_email_log',
+            'id'     => absint($item['id']),
+        ], admin_url('admin-post.php'));
 
         $actions = [
-            'view'   => '<a href="#">View</a>',
-            'delete' => sprintf('<a href="%s" class="js-delete-email-log">Delete</a>', $delete_url),
+            'view'   => sprintf('<a href="#" class="js-view-email-log" data-id="%d">View</a>', $item['id']),
+            'delete' => sprintf('<a href="%s" class="js-delete-email-log">Delete</a>', wp_nonce_url($delete_url, 'fs-email-tools-delete-nonce')),
         ];
 
         return sprintf('%s %s', $item['subject'], $this->row_actions($actions) );
@@ -106,7 +100,6 @@ class EmailLogsListTable extends WP_List_Table
         global $wpdb;
 
         $args = wp_parse_args($args, [
-            'paged'   => 1,
             's'       => '',
             'orderby' => 'created_at',
             'order'   => 'DESC',
@@ -114,10 +107,9 @@ class EmailLogsListTable extends WP_List_Table
 
         $args['orderby'] = in_array($args['orderby'], ['subject', 'created_at']) ? $args['orderby'] : 'created_at';
         $args['order']   = in_array($args['order'], ['asc', 'desc']) ? strtoupper($args['order']) : 'DESC';
-
-        $page        = max(1, absint($args['paged']));
-        $start       = ($page - 1) * self::PER_PAGE;
-        $table       = $wpdb->prefix . Database::TABLE;
+        $page            = $this->get_pagenum();
+        $start           = ($page - 1) * self::PER_PAGE;
+        $table           = $wpdb->prefix . Database::TABLE;
 
         if (empty($args['s'])) {
             $where_query = '1=1';

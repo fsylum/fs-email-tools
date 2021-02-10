@@ -15,7 +15,3 @@ $listTable = new EmailLogsListTable;
             $listTable->display();
         ?>
     </form>
-
-    <div id="fs-email-tools-dialog-delete" title="Delete Email Log">
-        This email log will be permanently deleted and cannot be recovered. Are you sure?
-    </div>

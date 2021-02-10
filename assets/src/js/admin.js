@@ -39,20 +39,9 @@
         $('.js-delete-email-log').on('click', function (e) {
             e.preventDefault();
 
-            $('#fs-email-tools-dialog-delete').dialog({
-                resizable: false,
-                height: "auto",
-                width: 400,
-                modal: true,
-                buttons: {
-                    Cancel: function() {
-                        $(this).dialog('close');
-                    },
-                    Confirm: function() {
-                        $(this).dialog('close');
-                    },
-                }
-            });
+            if (window.confirm('This email log will be permanently deleted and cannot be recovered. Are you sure?')) {
+                window.location = this.href;
+            };
         });
     });
 })(jQuery);
