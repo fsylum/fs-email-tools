@@ -29,7 +29,7 @@ class Log
         $headers        = $phpmailer->createHeader();
         $created_at     = current_time('mysql', true);
 
-        $wpdb->insert(
+        return $wpdb->insert(
             $wpdb->prefix . Database::TABLE,
             compact('recipients_to', 'recipients_cc', 'recipients_bcc', 'subject', 'message', 'attachments', 'headers', 'created_at'),
             '%s'
@@ -41,5 +41,23 @@ class Log
         global $wpdb;
 
         return $wpdb->delete($wpdb->prefix . Database::TABLE, ['id' => $this->id], ['%d']);
+    }
+
+    public function bulkDelete(array $ids = [])
+    {
+        global $wpdb;
+
+        $ids    = array_map('absint', $ids);
+        $ids    = array_filter($ids);
+        $ids    = array_unique($ids);
+        $format = implode(', ', array_fill(0, count($ids), '%d'));
+        $table  = $wpdb->prefix . Database::TABLE;
+
+        return $wpdb->query(
+            $wpdb->prepare(
+                "DELETE FROM {$table} WHERE ID IN ($format)",
+                $ids
+            )
+        );
     }
 }

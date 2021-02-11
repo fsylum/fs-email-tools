@@ -4,9 +4,9 @@ namespace Fsylum\EmailTools\WP\Admin\ListTables;
 
 use DateTimeZone;
 use WP_List_Table;
-use Fsylum\EmailTools\Plugin;
+use Fsylum\EmailTools\Helper;
+use Fsylum\EmailTools\Models\Log;
 use Fsylum\EmailTools\WP\Database;
-use Fsylum\EmailTools\WP\Admin\Page;
 
 class EmailLogsListTable extends WP_List_Table
 {
@@ -14,6 +14,8 @@ class EmailLogsListTable extends WP_List_Table
 
     public function prepare_items()
     {
+        $this->process_bulk_actions();
+
         $this->_column_headers = array($this->get_columns(), [], $this->get_sortable_columns());
         $result                = $this->getEmailLogs($_REQUEST);
         $this->items           = $result['items'];
@@ -66,9 +68,7 @@ class EmailLogsListTable extends WP_List_Table
 
     public function column_cb($item)
     {
-        return sprintf(
-            '<input type="checkbox" name="email_log_id[]" value="%d">', $item['id']
-        );
+        return sprintf('<input type="checkbox" name="ids[]" value="%d">', $item['id']);
     }
 
     public function column_default($item, $column_name)
@@ -133,5 +133,26 @@ class EmailLogsListTable extends WP_List_Table
         );
 
         return compact('items', 'total_items');
+    }
+
+    private function process_bulk_actions()
+    {
+        switch ($this->current_action()) {
+            case 'delete':
+                $redirect = $_SERVER['HTTP_REFERER'];
+
+                if (empty($redirect)) {
+                    $redirect = $this->tabUrl('email-logs');
+                }
+
+                $result = (new Log)->bulkDelete($_REQUEST['ids']);
+
+                $redirect = add_query_arg([
+                    'deleted' => $result ? 'yes' : 'no',
+                ], $redirect);
+
+                Helper::jsRedirect($redirect);
+                break;
+        }
     }
 }

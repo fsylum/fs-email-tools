@@ -4,6 +4,7 @@ namespace Fsylum\EmailTools\WP\Admin;
 
 use Fsylum\EmailTools\Models\Log;
 use Fsylum\EmailTools\Contracts\Service;
+use Fsylum\EmailTools\WP\Admin\ListTables\EmailLogsListTable;
 
 class Page implements Service
 {
@@ -51,9 +52,9 @@ class Page implements Service
             case 'email-logs':
                 if (isset($_GET['deleted'])) {
                     if (sanitize_key($_GET['deleted']) === 'yes') {
-                        add_settings_error(Settings::KEY, 'fs_email_tools_status', __( 'The email log has been successfully deleted.', 'fs-email-tools' ), 'updated');
+                        add_settings_error(Settings::KEY, 'fs_email_tools_status', __( 'The selected email log(s) have been successfully deleted.', 'fs-email-tools' ), 'updated');
                     } else {
-                        add_settings_error(Settings::KEY, 'fs_email_tools_status', __( 'Failed to delete email log. Please try again.', 'fs-email-tools' ));
+                        add_settings_error(Settings::KEY, 'fs_email_tools_status', __( 'Failed to delete selected email log(s). Please try again.', 'fs-email-tools' ));
                     }
                 }
                 break;
@@ -101,8 +102,7 @@ class Page implements Service
         $to      = sanitize_email($_REQUEST['to']);
         $subject = sanitize_text_field($_REQUEST['subject']);
         $message = sanitize_textarea_field($_REQUEST['message']);
-
-        $result = wp_mail($to, $subject, $message);
+        $result  = wp_mail($to, $subject, $message);
 
         wp_safe_redirect(
             add_query_arg([

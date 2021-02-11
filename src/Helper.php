@@ -41,4 +41,9 @@ class Helper
         return serialize($attachments);
     }
 
+    public static function jsRedirect(string $url = '')
+    {
+        echo '<script>window.location = "' . $url . '"</script>';
+        exit;
+    }
 }
