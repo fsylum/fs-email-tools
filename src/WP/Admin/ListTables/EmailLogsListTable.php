@@ -7,6 +7,7 @@ use WP_List_Table;
 use Fsylum\EmailTools\Helper;
 use Fsylum\EmailTools\Models\Log;
 use Fsylum\EmailTools\WP\Database;
+use Fsylum\EmailTools\WP\Admin\Page;
 
 class EmailLogsListTable extends WP_List_Table
 {
@@ -60,6 +61,7 @@ class EmailLogsListTable extends WP_List_Table
 
         $actions = [
             'view'   => sprintf('<a href="#" class="js-view-email-log" data-id="%d">View</a>', $item['id']),
+            'resend' => sprintf('<a href="#" class="js-resend-email-log" data-id="%d">Resend</a>', $item['id']),
             'delete' => sprintf('<a href="%s" class="js-delete-email-log">Delete</a>', wp_nonce_url($delete_url, 'fs-email-tools-delete-nonce')),
         ];
 
@@ -79,7 +81,11 @@ class EmailLogsListTable extends WP_List_Table
                 break;
 
             case 'created_at':
-                return wp_date('Y-m-d H:i:s', strtotime($item[$column_name]), new DateTimeZone('UTC'));
+                return wp_date(
+                    sprintf('%s %s', get_option('date_format'), get_option('time_format')),
+                    strtotime($item[$column_name]),
+                    new DateTimeZone('UTC')
+                );
                 break;
 
             default:
@@ -93,6 +99,22 @@ class EmailLogsListTable extends WP_List_Table
         return [
             'delete' => 'Delete'
         ];
+    }
+
+    protected function extra_tablenav($which)
+    {
+        ob_start();
+        ?>
+            <div class="alignleft actions">
+                <label for="filter-by-start-date" class="screen-reader-text">Filter by start date</label>
+                <input type="text" id="filter-by-start-date" placeholder="Select a start date">
+                <label for="filter-by-end-date" class="screen-reader-text">Filter by end date</label>
+                <input type="text" id="filter-by-end-date" placeholder="Select an end date">
+                <input type="submit" class="button" value="Filter">
+            </div>
+        <?php
+
+        echo ob_get_clean();
     }
 
     private function getEmailLogs(array $args = [])
@@ -142,10 +164,12 @@ class EmailLogsListTable extends WP_List_Table
                 $redirect = $_SERVER['HTTP_REFERER'];
 
                 if (empty($redirect)) {
-                    $redirect = $this->tabUrl('email-logs');
+                    $redirect = (new Page)->tabUrl('email-logs');
                 }
 
-                $result = (new Log)->bulkDelete($_REQUEST['ids']);
+                if (!empty($_REQUEST['ids'])) {
+                    $result = (new Log)->bulkDelete($_REQUEST['ids']);
+                }
 
                 $redirect = add_query_arg([
                     'deleted' => $result ? 'yes' : 'no',

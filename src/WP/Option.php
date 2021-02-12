@@ -30,4 +30,11 @@ class Option
     {
         return array_replace_recursive(self::$defaults, get_option(self::KEY, []));
     }
+
+    public static function isCurrentlyActive()
+    {
+        $option = self::get();
+
+        return $option['reroute']['status'] || $option['log']['status'] || $option['bcc']['status'];
+    }
 }

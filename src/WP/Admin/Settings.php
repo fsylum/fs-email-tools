@@ -104,7 +104,7 @@ class Settings implements Service
         );
     }
 
-    public function validateAndSanitize(array $data = [])
+    public function validateAndSanitize($data = [])
     {
         $is_valid = true;
         $data     = wp_parse_args($data, Option::$defaults);

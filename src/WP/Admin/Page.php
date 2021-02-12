@@ -2,6 +2,7 @@
 
 namespace Fsylum\EmailTools\WP\Admin;
 
+use Fsylum\EmailTools\WP\Option;
 use Fsylum\EmailTools\Models\Log;
 use Fsylum\EmailTools\Contracts\Service;
 use Fsylum\EmailTools\WP\Admin\ListTables\EmailLogsListTable;
@@ -16,6 +17,19 @@ class Page implements Service
         add_action('admin_menu', [$this, 'addPage']);
         add_action('admin_post_fs_email_tools_send_test_email', [$this, 'sendTestEmail']);
         add_action('admin_post_fs_email_tools_delete_email_log', [$this, 'deleteEmailLog']);
+        add_action('admin_notices', [$this, 'showNotice']);
+    }
+
+    public function showNotice() {
+        if (!Option::isCurrentlyActive()) {
+            return;
+        }
+
+        ?>
+            <div class="notice notice-info">
+                <p><?php _e( 'Email Tools plugin is currently active on this site. Please verify that this is intended. <a href="' . esc_url($this->tabUrl('settings')) . '">(Check Settings)</a>', 'sample-text-domain' ); ?></p>
+            </div>
+        <?php
     }
 
     public function addPage()
@@ -85,7 +99,7 @@ class Page implements Service
         ];
     }
 
-    private function tabUrl(string $tab)
+    public function tabUrl(string $tab)
     {
         return add_query_arg([
             'page' => self::KEY,

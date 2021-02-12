@@ -43,5 +43,8 @@
                 window.location = this.href;
             };
         });
+
+        $('#filter-by-start-date').datepicker();
+        $('#filter-by-end-date').datepicker();
     });
 })(jQuery);

@@ -4,7 +4,7 @@ namespace Fsylum\EmailTools;
 
 class Helper
 {
-    public static function sanitizeEmailsFromTextarea(string $data = '')
+    public static function sanitizeEmailsFromTextarea($data = '')
     {
         if (empty($data)) {
             return [];
@@ -17,7 +17,7 @@ class Helper
         return $emails;
     }
 
-    public static function parsePHPMailerEmails(array $emails = [])
+    public static function parsePHPMailerEmails($emails = [])
     {
         $emails = array_merge([], ...$emails);
         $emails = array_filter($emails);
@@ -29,7 +29,7 @@ class Helper
         return serialize($emails);
     }
 
-    public static function parsePHPMailerAttachments(array $attachments = [])
+    public static function parsePHPMailerAttachments($attachments = [])
     {
         $attachments = wp_list_pluck($attachments, 0);
         $attachments = array_filter($attachments);
@@ -41,7 +41,7 @@ class Helper
         return serialize($attachments);
     }
 
-    public static function jsRedirect(string $url = '')
+    public static function jsRedirect($url = '')
     {
         echo '<script>window.location = "' . $url . '"</script>';
         exit;

@@ -2,6 +2,7 @@
 
 namespace Fsylum\EmailTools\Models;
 
+use Fsylum\EmailTools\Helper;
 use Fsylum\EmailTools\WP\Database;
 use PHPMailer\PHPMailer\PHPMailer;
 
