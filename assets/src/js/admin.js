@@ -44,7 +44,14 @@
             };
         });
 
-        $('#filter-by-start-date').datepicker();
-        $('#filter-by-end-date').datepicker();
+        $('#filter-by-start-date').datepicker({
+            nextText: '&rsaquo;',
+            prevText: '&lsaquo;'
+        });
+
+        $('#filter-by-end-date').datepicker({
+            nextText: '&rsaquo;',
+            prevText: '&lsaquo;'
+        });
     });
 })(jQuery);

@@ -1,3 +1,182 @@
 body.tools_page_fs-email-tools .search-box {
     margin: 10px 0 5px;
 }
+
+.ui-helper-clearfix::before,
+.ui-helper-clearfix::after {
+    content: " ";
+    display: table;
+}
+
+.ui-helper-clearfix::after {
+    clear: both;
+}
+
+.ui-datepicker {
+    background-color: #fff;
+    border: 1px solid #f0f0f0;
+    color: #555;
+    padding: 5px;
+
+    .ui-datepicker-header {
+        padding: 10px 0;
+    }
+
+    .ui-datepicker-next,
+    .ui-datepicker-prev {
+        color: #555;
+        cursor: pointer;
+        font-size: 150%;
+        font-weight: 700;
+        text-decoration: none;
+    }
+
+    .ui-datepicker-prev {
+        float: left;
+    }
+
+    .ui-datepicker-next {
+        float: right;
+    }
+
+    .ui-datepicker-title {
+        font-weight: 700;
+        text-align: center;
+    }
+
+    .ui-datepicker-calendar {
+        border-collapse: collapse;
+    }
+
+    thead th,
+    tbody td {
+    }
+
+    tbody td {
+        a {
+            background-color: #f9f9f9;
+            border: 1px solid #f0f0f0;
+            padding: 5px;
+            display: block;
+            color: #555;
+            text-align: right;
+            text-decoration: none;
+
+            &.ui-state-hover {
+                opacity: 0.5;
+
+                &.ui-state-highlight {
+                    opacity: 1;
+                }
+            }
+        }
+    }
+}
+
+.admin-color-fresh .ui-datepicker tbody td a.ui-state-highlight {
+    background-color: #0071a1;
+    border-color: #0071a1;
+    color: #fff;
+}
+
+.admin-color-fresh .ui-datepicker tbody td a.ui-state-hover {
+    background-color: #0071a1;
+    border-color: #0071a1;
+    color: #fff;
+}
+
+.admin-color-light .ui-datepicker tbody td a.ui-state-highlight {
+    background-color: #04b0db;
+    border-color: #0498bd;
+    color: #fff;
+}
+
+.admin-color-light .ui-datepicker tbody td a.ui-state-hover {
+    background-color: #04b0db;
+    border-color: #0498bd;
+    color: #fff;
+}
+
+.admin-color-modern .ui-datepicker tbody td a.ui-state-highlight {
+    background-color: #3858e9;
+    border-color: #3858e9;
+    color: #fff;
+}
+
+.admin-color-modern .ui-datepicker tbody td a.ui-state-hover {
+    background-color: #3858e9;
+    border-color: #3858e9;
+    color: #fff;
+}
+
+.admin-color-blue .ui-datepicker tbody td a.ui-state-highlight {
+    background-color: #e3af55;
+    border-color: #dfa33b;
+    color: #fff;
+}
+
+.admin-color-blue .ui-datepicker tbody td a.ui-state-hover {
+    background-color: #e3af55;
+    border-color: #dfa33b;
+    color: #fff;
+}
+
+.admin-color-coffee .ui-datepicker tbody td a.ui-state-highlight {
+    background-color: #c7a589;
+    border-color: #c7a589;
+    color: #fff;
+}
+
+.admin-color-coffee .ui-datepicker tbody td a.ui-state-hover {
+    background-color: #c7a589;
+    border-color: #c7a589;
+    color: #fff;
+}
+
+.admin-color-ectoplasm .ui-datepicker tbody td a.ui-state-highlight {
+    background-color: #a3b745;
+    border-color: #a3b745;
+    color: #fff;
+}
+
+.admin-color-ectoplasm .ui-datepicker tbody td a.ui-state-hover {
+    background-color: #a3b745;
+    border-color: #a3b745;
+    color: #fff;
+}
+
+.admin-color-midnight .ui-datepicker tbody td a.ui-state-highlight {
+    background-color: #e35950;
+    border-color: #df4136;
+    color: #fff;
+}
+
+.admin-color-midnight .ui-datepicker tbody td a.ui-state-hover {
+    background-color: #e35950;
+    border-color: #df4136;
+    color: #fff;
+}
+
+.admin-color-ocean .ui-datepicker tbody td a.ui-state-highlight {
+    background-color: #a7c0a9;
+    border-color: #95b497;
+    color: #fff;
+}
+
+.admin-color-ocean .ui-datepicker tbody td a.ui-state-hover {
+    background-color: #a7c0a9;
+    border-color: #95b497;
+    color: #fff;
+}
+
+.admin-color-sunrise .ui-datepicker tbody td a.ui-state-highlight {
+    background-color: #dd823b;
+    border-color: #dd823b;
+    color: #fff;
+}
+
+.admin-color-sunrise .ui-datepicker tbody td a.ui-state-hover {
+    background-color: #dd823b;
+    border-color: #dd823b;
+    color: #fff;
+}

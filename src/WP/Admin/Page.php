@@ -27,7 +27,7 @@ class Page implements Service
 
         ?>
             <div class="notice notice-info">
-                <p><?php _e( 'Email Tools plugin is currently active on this site. Please verify that this is intended. <a href="' . esc_url($this->tabUrl('settings')) . '">(Check Settings)</a>', 'sample-text-domain' ); ?></p>
+                <p><?php _e( 'Email Tools plugin is currently active on this site. <a href="' . esc_url($this->tabUrl('settings')) . '">(View Settings)</a>', 'sample-text-domain' ); ?></p>
             </div>
         <?php
     }
