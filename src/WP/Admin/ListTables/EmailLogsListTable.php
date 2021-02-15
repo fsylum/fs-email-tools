@@ -103,13 +103,17 @@ class EmailLogsListTable extends WP_List_Table
 
     protected function extra_tablenav($which)
     {
+        if ($which === 'bottom') {
+            return;
+        }
+
         ob_start();
         ?>
             <div class="alignleft actions">
-                <label for="filter-by-start-date" class="screen-reader-text">Filter by start date</label>
-                <input type="text" id="filter-by-start-date" placeholder="Select a start date">
-                <label for="filter-by-end-date" class="screen-reader-text">Filter by end date</label>
-                <input type="text" id="filter-by-end-date" placeholder="Select an end date">
+                <label for="filter-start-date" class="screen-reader-text">Filter by start date</label>
+                <input type="text" id="filter-start-date" placeholder="Select a start date" name="start_date">
+                <label for="filter-end-date" class="screen-reader-text">Filter by end date</label>
+                <input type="text" id="filter-end-date" placeholder="Select an end date" name="end_date">
                 <input type="submit" class="button" value="Filter">
             </div>
         <?php

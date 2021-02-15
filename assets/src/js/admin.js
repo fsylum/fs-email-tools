@@ -44,14 +44,22 @@
             };
         });
 
-        $('#filter-by-start-date').datepicker({
+        let startDateDatepicker = $('#filter-start-date').datepicker({
             nextText: '&rsaquo;',
             prevText: '&lsaquo;'
         });
 
-        $('#filter-by-end-date').datepicker({
+        let endDateDatepicker = $('#filter-end-date').datepicker({
             nextText: '&rsaquo;',
             prevText: '&lsaquo;'
+        });
+
+        startDateDatepicker.on('change', function () {
+            endDateDatepicker.datepicker('option', 'minDate', startDateDatepicker.datepicker('getDate'));
+        });
+
+        endDateDatepicker.on('change', function () {
+            startDateDatepicker.datepicker('option', 'maxDate', endDateDatepicker.datepicker('getDate'));
         });
     });
 })(jQuery);

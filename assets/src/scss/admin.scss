@@ -14,7 +14,7 @@ body.tools_page_fs-email-tools .search-box {
 
 .ui-datepicker {
     background-color: #fff;
-    border: 1px solid #f0f0f0;
+    border: 1px solid #ddd;
     color: #555;
     padding: 5px;
 
@@ -53,129 +53,134 @@ body.tools_page_fs-email-tools .search-box {
     }
 
     tbody td {
-        a {
-            background-color: #f9f9f9;
-            border: 1px solid #f0f0f0;
+        .ui-state-default {
+            background-color: #f7f7f7;
+            border: 1px solid #ddd;
             padding: 5px;
             display: block;
             color: #555;
             text-align: right;
             text-decoration: none;
+            width: 20px;
 
             &.ui-state-hover {
                 opacity: 0.5;
 
-                &.ui-state-highlight {
+                &.ui-state-active {
                     opacity: 1;
                 }
             }
         }
     }
+
+    .ui-datepicker-unselectable .ui-state-default {
+        opacity: 0.5;
+    }
 }
 
-.admin-color-fresh .ui-datepicker tbody td a.ui-state-highlight {
+.admin-color-fresh .ui-datepicker tbody td .ui-state-default.ui-state-active {
     background-color: #0071a1;
     border-color: #0071a1;
     color: #fff;
 }
 
-.admin-color-fresh .ui-datepicker tbody td a.ui-state-hover {
+.admin-color-fresh .ui-datepicker tbody td .ui-state-default.ui-state-hover {
     background-color: #0071a1;
     border-color: #0071a1;
     color: #fff;
 }
 
-.admin-color-light .ui-datepicker tbody td a.ui-state-highlight {
+.admin-color-light .ui-datepicker tbody td .ui-state-default.ui-state-active {
     background-color: #04b0db;
     border-color: #0498bd;
     color: #fff;
 }
 
-.admin-color-light .ui-datepicker tbody td a.ui-state-hover {
+.admin-color-light .ui-datepicker tbody td .ui-state-default.ui-state-hover {
     background-color: #04b0db;
     border-color: #0498bd;
     color: #fff;
 }
 
-.admin-color-modern .ui-datepicker tbody td a.ui-state-highlight {
+.admin-color-modern .ui-datepicker tbody td .ui-state-default.ui-state-active {
     background-color: #3858e9;
     border-color: #3858e9;
     color: #fff;
 }
 
-.admin-color-modern .ui-datepicker tbody td a.ui-state-hover {
+.admin-color-modern .ui-datepicker tbody td .ui-state-default.ui-state-hover {
     background-color: #3858e9;
     border-color: #3858e9;
     color: #fff;
 }
 
-.admin-color-blue .ui-datepicker tbody td a.ui-state-highlight {
+.admin-color-blue .ui-datepicker tbody td .ui-state-default.ui-state-active {
     background-color: #e3af55;
     border-color: #dfa33b;
     color: #fff;
 }
 
-.admin-color-blue .ui-datepicker tbody td a.ui-state-hover {
+.admin-color-blue .ui-datepicker tbody td .ui-state-default.ui-state-hover {
     background-color: #e3af55;
     border-color: #dfa33b;
     color: #fff;
 }
 
-.admin-color-coffee .ui-datepicker tbody td a.ui-state-highlight {
+.admin-color-coffee .ui-datepicker tbody td .ui-state-default.ui-state-active {
     background-color: #c7a589;
     border-color: #c7a589;
     color: #fff;
 }
 
-.admin-color-coffee .ui-datepicker tbody td a.ui-state-hover {
+.admin-color-coffee .ui-datepicker tbody td .ui-state-default.ui-state-hover {
     background-color: #c7a589;
     border-color: #c7a589;
     color: #fff;
 }
 
-.admin-color-ectoplasm .ui-datepicker tbody td a.ui-state-highlight {
+.admin-color-ectoplasm .ui-datepicker tbody td .ui-state-default.ui-state-active {
     background-color: #a3b745;
     border-color: #a3b745;
     color: #fff;
 }
 
-.admin-color-ectoplasm .ui-datepicker tbody td a.ui-state-hover {
+.admin-color-ectoplasm .ui-datepicker tbody td .ui-state-default.ui-state-hover {
     background-color: #a3b745;
     border-color: #a3b745;
     color: #fff;
 }
 
-.admin-color-midnight .ui-datepicker tbody td a.ui-state-highlight {
+.admin-color-midnight .ui-datepicker tbody td .ui-state-default.ui-state-active {
     background-color: #e35950;
     border-color: #df4136;
     color: #fff;
 }
 
-.admin-color-midnight .ui-datepicker tbody td a.ui-state-hover {
+.admin-color-midnight .ui-datepicker tbody td .ui-state-default.ui-state-hover {
     background-color: #e35950;
     border-color: #df4136;
     color: #fff;
 }
 
-.admin-color-ocean .ui-datepicker tbody td a.ui-state-highlight {
+.admin-color-ocean .ui-datepicker tbody td .ui-state-default.ui-state-active {
     background-color: #a7c0a9;
     border-color: #95b497;
     color: #fff;
 }
 
-.admin-color-ocean .ui-datepicker tbody td a.ui-state-hover {
+.admin-color-ocean .ui-datepicker tbody td .ui-state-default.ui-state-hover {
     background-color: #a7c0a9;
     border-color: #95b497;
     color: #fff;
 }
 
-.admin-color-sunrise .ui-datepicker tbody td a.ui-state-highlight {
+.admin-color-sunrise .ui-datepicker tbody td .ui-state-default.ui-state-active {
     background-color: #dd823b;
     border-color: #dd823b;
     color: #fff;
 }
 
-.admin-color-sunrise .ui-datepicker tbody td a.ui-state-hover {
+.admin-color-sunrise .ui-datepicker tbody td .ui-state-default.ui-state-hover {
     background-color: #dd823b;
     border-color: #dd823b;
     color: #fff;
