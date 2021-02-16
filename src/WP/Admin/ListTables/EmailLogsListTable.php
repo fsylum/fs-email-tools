@@ -6,25 +6,23 @@ use DateTimeZone;
 use WP_List_Table;
 use Fsylum\EmailTools\Helper;
 use Fsylum\EmailTools\Models\Log;
-use Fsylum\EmailTools\WP\Database;
 use Fsylum\EmailTools\WP\Admin\Page;
+use Fsylum\EmailTools\Factories\LogFactory;
 
 class EmailLogsListTable extends WP_List_Table
 {
-    const PER_PAGE = 10;
-
     public function prepare_items()
     {
         $this->process_bulk_actions();
 
         $this->_column_headers = array($this->get_columns(), [], $this->get_sortable_columns());
-        $result                = $this->getEmailLogs($_REQUEST);
+        $result                = (new LogFactory($_REQUEST, $this->get_pagenum()))->get();
         $this->items           = $result['items'];
 
         $this->set_pagination_args(
             array(
                 'total_items' => $result['total_items'],
-                'per_page'    => self::PER_PAGE,
+                'per_page'    => $result['per_page'],
             )
         );
     }
@@ -111,54 +109,14 @@ class EmailLogsListTable extends WP_List_Table
         ?>
             <div class="alignleft actions">
                 <label for="filter-start-date" class="screen-reader-text">Filter by start date</label>
-                <input type="text" id="filter-start-date" placeholder="Select a start date" name="start_date">
+                <input type="text" id="filter-start-date" placeholder="Select a start date" name="start_date" value="<?php echo esc_attr(sanitize_text_field($_GET['start_date'] ?? '')) ?>">
                 <label for="filter-end-date" class="screen-reader-text">Filter by end date</label>
-                <input type="text" id="filter-end-date" placeholder="Select an end date" name="end_date">
+                <input type="text" id="filter-end-date" placeholder="Select an end date" name="end_date" value="<?php echo esc_attr(sanitize_text_field($_GET['end_date'] ?? '')) ?>">
                 <input type="submit" class="button" value="Filter">
             </div>
         <?php
 
         echo ob_get_clean();
-    }
-
-    private function getEmailLogs(array $args = [])
-    {
-        global $wpdb;
-
-        $args = wp_parse_args($args, [
-            's'       => '',
-            'orderby' => 'created_at',
-            'order'   => 'DESC',
-        ]);
-
-        $args['orderby'] = in_array($args['orderby'], ['subject', 'created_at']) ? $args['orderby'] : 'created_at';
-        $args['order']   = in_array($args['order'], ['asc', 'desc']) ? strtoupper($args['order']) : 'DESC';
-        $page            = $this->get_pagenum();
-        $start           = ($page - 1) * self::PER_PAGE;
-        $table           = $wpdb->prefix . Database::TABLE;
-
-        if (empty($args['s'])) {
-            $where_query = '1=1';
-        } else {
-            $where_query = $wpdb->prepare(
-                'recipients_to LIKE %s OR subject LIKE %s OR message LIKE %s',
-                '%'. $wpdb->esc_like($args['s']) . '%',
-                '%'. $wpdb->esc_like($args['s']) . '%',
-                '%'. $wpdb->esc_like($args['s']) . '%'
-            );
-        }
-
-        $total_items = $wpdb->get_var("SELECT count(id) FROM {$table} WHERE {$where_query} ");
-        $items       = $wpdb->get_results(
-            $wpdb->prepare(
-                "SELECT id, recipients_to, subject, created_at FROM {$table} WHERE {$where_query} ORDER BY {$args['orderby']} {$args['order']} LIMIT %d,%d",
-                $start,
-                self::PER_PAGE
-            ),
-            ARRAY_A
-        );
-
-        return compact('items', 'total_items');
     }
 
     private function process_bulk_actions()
