@@ -81,8 +81,7 @@ class EmailLogsListTable extends WP_List_Table
             case 'created_at':
                 return wp_date(
                     sprintf('%s %s', get_option('date_format'), get_option('time_format')),
-                    strtotime($item[$column_name]),
-                    new DateTimeZone('UTC')
+                    strtotime($item[$column_name])
                 );
                 break;
 
