@@ -19,11 +19,11 @@ class LogFactory
         ]);
 
         if (!empty($args['start_date'])) {
-            $args['start_date'] = DateTime::createFromFormat(get_option('date_format'), $args['start_date'], wp_timezone())->setTimezone(new DateTimeZone('UTC'));
+            $args['start_date'] = DateTime::createFromFormat(get_option('date_format') . ' H:i:s', $args['start_date'] . ' 00:00:00', wp_timezone())->setTimezone(new DateTimeZone('UTC'));
         }
 
         if (!empty($args['end_date'])) {
-            $args['end_date'] = DateTime::createFromFormat(get_option('date_format'), $args['end_date'], wp_timezone())->setTimezone(new DateTimeZone('UTC'));
+            $args['end_date'] = DateTime::createFromFormat(get_option('date_format') . ' H:i:s', $args['end_date'] . ' 23:59:59', wp_timezone())->setTimezone(new DateTimeZone('UTC'));
         }
 
         $args['orderby'] = in_array($args['orderby'], ['subject', 'created_at']) ? $args['orderby'] : 'created_at';
@@ -56,14 +56,14 @@ class LogFactory
         if (!empty($this->args['start_date'])) {
             $wheres[] = $wpdb->prepare(
                 '(created_at >= %s)',
-                $this->args['start_date']->format('Y-m-d') . ' 00:00:00'
+                $this->args['start_date']->format('Y-m-d H:i:s')
             );
         }
 
         if (!empty($this->args['end_date'])) {
             $wheres[] = $wpdb->prepare(
                 '(created_at <= %s)',
-                $this->args['end_date']->format('Y-m-d') . ' 23:59:59'
+                $this->args['end_date']->format('Y-m-d H:i:s')
             );
         }
 
