@@ -31,7 +31,7 @@ class LogFactory
 
         $this->args     = $args;
         $this->page     = absint($page);
-        $this->per_page = absint($per_page);
+        $this->per_page = empty($per_page) ? 10 : absint($per_page);
 
         return $this;
     }

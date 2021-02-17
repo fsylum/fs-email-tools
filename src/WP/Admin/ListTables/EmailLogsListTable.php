@@ -15,8 +15,14 @@ class EmailLogsListTable extends WP_List_Table
     {
         $this->process_bulk_actions();
 
+        $per_page = get_user_meta(
+            get_current_user_id(),
+            get_current_screen()->get_option('per_page', 'option'),
+            true
+        );
+
         $this->_column_headers = array($this->get_columns(), [], $this->get_sortable_columns());
-        $result                = (new LogFactory($_REQUEST, $this->get_pagenum()))->get();
+        $result                = (new LogFactory($_REQUEST, $this->get_pagenum(), absint($per_page)))->get();
         $this->items           = $result['items'];
 
         $this->set_pagination_args(

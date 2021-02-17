@@ -18,6 +18,7 @@ class Page implements Service
         add_action('admin_post_fs_email_tools_send_test_email', [$this, 'sendTestEmail']);
         add_action('admin_post_fs_email_tools_delete_email_log', [$this, 'deleteEmailLog']);
         add_action('admin_notices', [$this, 'showNotice']);
+        add_filter('set-screen-option', [$this, 'saveScreenOption'], 10, 3);
     }
 
     public function showNotice() {
@@ -34,7 +35,9 @@ class Page implements Service
 
     public function addPage()
     {
-        add_management_page(__('Email Tools', 'fs-email-tools'), __('Email Tools', 'fs-email-tools'), self::CAPABILITY, self::KEY, [$this, 'displayPage']);
+        $hook = add_management_page(__('Email Tools', 'fs-email-tools'), __('Email Tools', 'fs-email-tools'), self::CAPABILITY, self::KEY, [$this, 'displayPage']);
+
+        add_action("load-$hook", [$this, 'addScreenOption']);
     }
 
     public function displayPage()
@@ -43,8 +46,7 @@ class Page implements Service
             return;
         }
 
-        $all_tabs    = $this->tabs();
-        $current_tab = !empty($_GET['tab']) && in_array($_GET['tab'], array_keys($all_tabs)) ? sanitize_key($_GET['tab']) : array_keys($all_tabs)[0];
+        $current_tab = $this->getCurrentTab();
 
         switch ($current_tab) {
             case 'settings':
@@ -64,6 +66,7 @@ class Page implements Service
                 break;
 
             case 'email-logs':
+
                 if (isset($_GET['deleted'])) {
                     if (sanitize_key($_GET['deleted']) === 'yes') {
                         add_settings_error(Settings::KEY, 'fs_email_tools_status', __( 'The selected email log(s) have been successfully deleted.', 'fs-email-tools' ), 'updated');
@@ -80,7 +83,7 @@ class Page implements Service
                 <h1><?php echo esc_html(get_admin_page_title()); ?></h1>
 
                 <h2 class="nav-tab-wrapper">
-                    <?php foreach ($all_tabs as $key => $title): ?>
+                    <?php foreach ($this->tabs() as $key => $title): ?>
                         <a href="<?php echo esc_url($this->tabUrl($key)); ?>" class="nav-tab <?php echo $current_tab === $key ? 'nav-tab-active' : ''; ?>"><?php echo esc_html($title); ?></a>
                     <?php endforeach; ?>
                 </h2>
@@ -90,6 +93,27 @@ class Page implements Service
         <?php
     }
 
+    public function addScreenOption()
+    {
+        if ($this->getCurrentTab() !== 'email-logs') {
+            return;
+        }
+
+        add_screen_option('per_page', [
+            'default' => 10,
+            'option'  => 'email_logs_per_page',
+        ]);
+    }
+
+    public function saveScreenOption($screen_option, $option, $value)
+    {
+        if ($option === 'email_logs_per_page') {
+            return $value;
+        }
+
+        return $screen_option;
+    }
+
     private function tabs()
     {
         return [
@@ -97,6 +121,13 @@ class Page implements Service
             'email-logs' => 'Email Logs',
             'test-email' => 'Send Test Email',
         ];
+    }
+
+    private function getCurrentTab()
+    {
+        $all_tabs = $this->tabs();
+
+        return !empty($_GET['tab']) && in_array($_GET['tab'], array_keys($all_tabs)) ? sanitize_key($_GET['tab']) : array_keys($all_tabs)[0];
     }
 
     public function tabUrl(string $tab)
