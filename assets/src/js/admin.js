@@ -44,6 +44,14 @@
             };
         });
 
+        $('#doaction, #doaction2').on('click', function (e) {
+            e.preventDefault();
+
+            if (window.confirm('The selected email logs will be permanently deleted and cannot be recovered. Are you sure?')) {
+                $(this).closest('form').trigger('submit');
+            };
+        });
+
         let startDateDatepicker = $('#filter-start-date').datepicker({
             nextText: '&rsaquo;',
             prevText: '&lsaquo;'

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Plugin Name:         Email Tools
  * Plugin URI:          https://github.com/fsylum/wp-email-tools
