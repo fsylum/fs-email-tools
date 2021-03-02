@@ -23,6 +23,7 @@ register_activation_hook(__FILE__, [Fsylum\EmailTools\WP\Database::class, 'insta
 
 $plugin = new Fsylum\EmailTools\Plugin;
 
+$plugin->addService(new Fsylum\EmailTools\WP\Ajax);
 $plugin->addService(new Fsylum\EmailTools\WP\Mail);
 $plugin->addService(new Fsylum\EmailTools\WP\Asset);
 $plugin->addService(new Fsylum\EmailTools\WP\Admin\Page);

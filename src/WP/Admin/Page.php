@@ -66,7 +66,6 @@ class Page implements Service
                 break;
 
             case 'email-logs':
-
                 if (isset($_GET['deleted'])) {
                     if (sanitize_key($_GET['deleted']) === 'yes') {
                         add_settings_error(Settings::KEY, 'fs_email_tools_status', __( 'The selected email log(s) have been successfully deleted.', 'fs-email-tools' ), 'updated');

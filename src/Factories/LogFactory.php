@@ -76,7 +76,7 @@ class LogFactory
         $total_items = $wpdb->get_var("SELECT count(id) FROM {$table} WHERE {$wheres}");
         $items       = $wpdb->get_results(
             $wpdb->prepare(
-                "SELECT id, recipients_to, subject, created_at FROM {$table} WHERE {$wheres} ORDER BY {$this->args['orderby']} {$this->args['order']} LIMIT %d,%d",
+                "SELECT id, recipients_to, subject, is_read, created_at FROM {$table} WHERE {$wheres} ORDER BY {$this->args['orderby']} {$this->args['order']} LIMIT %d,%d",
                 $start,
                 $this->per_page
             ),

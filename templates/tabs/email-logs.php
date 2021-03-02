@@ -15,3 +15,7 @@ $listTable = new EmailLogsListTable;
             $listTable->display();
         ?>
     </form>
+<?php
+
+require FS_EMAIL_TOOLS_PLUGIN_PATH . '/templates/dialogs/email-log-view.php';
+

@@ -65,11 +65,15 @@ class EmailLogsListTable extends WP_List_Table
 
         $actions = [
             'view'   => sprintf('<a href="#" class="js-view-email-log" data-id="%d">View</a>', $item['id']),
-            'resend' => sprintf('<a href="#" class="js-resend-email-log" data-id="%d">Resend</a>', $item['id']),
             'delete' => sprintf('<a href="%s" class="js-delete-email-log">Delete</a>', wp_nonce_url($delete_url, 'fs-email-tools-delete-nonce')),
         ];
 
-        return sprintf('%s %s', $item['subject'], $this->row_actions($actions) );
+        $subject = sprintf(
+            (bool) $item['is_read'] ? '%s' : '<strong>%s</strong>',
+            $item['subject']
+        );
+
+        return sprintf('%s %s', $subject, $this->row_actions($actions));
     }
 
     public function column_cb($item)

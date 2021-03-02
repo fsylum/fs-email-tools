@@ -69,5 +69,35 @@
         endDateDatepicker.on('change', function () {
             startDateDatepicker.datepicker('option', 'maxDate', endDateDatepicker.datepicker('getDate'));
         });
+
+        $('#fs-email-tools-dialog-email-log-view').dialog({
+            autoOpen: false,
+            closeOnEscape: true,
+            dialogClass: 'wp-dialog',
+            draggable: false,
+            maxWidth: 700,
+            minWidth: 100,
+            modal: true,
+            resizable: false,
+            title: 'Email Preview',
+            open: function(event, ui) {
+                var $dialog = $(this);
+
+                wp.ajax.post('fs_email_tools_get_email_log', {
+                    id: $dialog.data('emailLogId')
+                })
+                .done(function (res) {
+                })
+                .fail(function (res) {
+                    $dialog.dialog('close');
+                    alert('The email log cannot be retrieved. Please try again later.');
+                });
+            }
+        });
+
+        $('.js-view-email-log').on('click', function (e) {
+            e.preventDefault();
+            $('#fs-email-tools-dialog-email-log-view').data('emailLogId', $(this).data('id')).dialog('open');
+        });
     });
 })(jQuery);
