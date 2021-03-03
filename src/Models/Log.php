@@ -10,7 +10,7 @@ class Log
 {
     protected $id;
 
-    public function fromId($id)
+    public function __construct($id)
     {
         $this->id = absint($id);
 
@@ -42,6 +42,34 @@ class Log
         global $wpdb;
 
         return $wpdb->delete($wpdb->prefix . Database::TABLE, ['id' => $this->id], ['%d']);
+    }
+
+    public function fetch()
+    {
+        global $wpdb;
+
+        $table = $wpdb->prefix . Database::TABLE;
+
+        return $wpdb->get_row(
+            $wpdb->prepare(
+                "SELECT id, recipients_to, recipients_cc, recipients_bcc, subject, message, attachments, headers, created_at FROM {$table} WHERE id = %d LIMIT 1",
+                $this->id
+            ),
+            ARRAY_A
+        );
+    }
+
+    public function markAsRead()
+    {
+        global $wpdb;
+
+        return $wpdb->update(
+            $wpdb->prefix . Database::TABLE,
+            ['is_read' => 1],
+            ['id' => $this->id],
+            ['%d'],
+            ['%d']
+        );
     }
 
     public function bulkDelete(array $ids = [])

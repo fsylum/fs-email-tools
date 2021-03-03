@@ -28,7 +28,7 @@ class Page implements Service
 
         ?>
             <div class="notice notice-info">
-                <p><?php _e( 'Email Tools plugin is currently active on this site. <a href="' . esc_url($this->tabUrl('settings')) . '">(View Settings)</a>', 'sample-text-domain' ); ?></p>
+                <p><?php _e( 'Email Tools plugin is currently active on this site. Please check the <a href="' . esc_url($this->tabUrl('settings')) . '">Settings</a> page and verify if this is intended.', 'sample-text-domain' ); ?></p>
             </div>
         <?php
     }
@@ -162,7 +162,7 @@ class Page implements Service
             wp_die('Invalid request');
         }
 
-        $result   = (new Log)->fromId(absint($_REQUEST['id']))->delete();
+        $result   = (new Log(absint($_REQUEST['id'])))->delete();
         $redirect = $_SERVER['HTTP_REFERER'];
 
         if (empty($redirect)) {

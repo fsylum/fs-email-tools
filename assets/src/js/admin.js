@@ -87,6 +87,7 @@
                     id: $dialog.data('emailLogId')
                 })
                 .done(function (res) {
+                    console.log(res);
                 })
                 .fail(function (res) {
                     $dialog.dialog('close');
