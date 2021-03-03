@@ -9,6 +9,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 class Log
 {
     protected $id;
+    protected $data = [];
 
     public function __construct($id)
     {
@@ -21,12 +22,12 @@ class Log
     {
         global $wpdb;
 
-        $recipients_to  = Helper::parsePHPMailerEmails($phpmailer->getToAddresses());
-        $recipients_cc  = Helper::parsePHPMailerEmails($phpmailer->getCcAddresses());
-        $recipients_bcc = Helper::parsePHPMailerEmails($phpmailer->getBccAddresses());
+        $recipients_to  = Helper::sanitizePHPMailerEmails($phpmailer->getToAddresses());
+        $recipients_cc  = Helper::sanitizePHPMailerEmails($phpmailer->getCcAddresses());
+        $recipients_bcc = Helper::sanitizePHPMailerEmails($phpmailer->getBccAddresses());
         $subject        = $phpmailer->Subject;
         $message        = $phpmailer->Body;
-        $attachments    = Helper::parsePHPMailerAttachments($phpmailer->getAttachments());
+        $attachments    = Helper::sanitizePHPMailerAttachments($phpmailer->getAttachments());
         $headers        = $phpmailer->createHeader();
         $created_at     = current_time('mysql', true);
 
@@ -50,13 +51,31 @@ class Log
 
         $table = $wpdb->prefix . Database::TABLE;
 
-        return $wpdb->get_row(
+        $this->data = $wpdb->get_row(
             $wpdb->prepare(
                 "SELECT id, recipients_to, recipients_cc, recipients_bcc, subject, message, attachments, headers, created_at FROM {$table} WHERE id = %d LIMIT 1",
                 $this->id
             ),
             ARRAY_A
         );
+
+        return $this;
+    }
+
+    public function toArray()
+    {
+        $data = $this->data;
+
+        foreach ([
+            'recipients_to',
+            'recipients_cc',
+            'recipients_bcc',
+            'attachments',
+        ] as $key) {
+            $data[$key] = array_values(maybe_unserialize($data[$key]));
+        }
+
+        return $data;
     }
 
     public function markAsRead()

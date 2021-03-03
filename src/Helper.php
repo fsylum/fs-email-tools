@@ -17,7 +17,7 @@ class Helper
         return $emails;
     }
 
-    public static function parsePHPMailerEmails($emails = [])
+    public static function sanitizePHPMailerEmails($emails = [])
     {
         $emails = array_merge([], ...$emails);
         $emails = array_filter($emails);
@@ -29,7 +29,7 @@ class Helper
         return serialize($emails);
     }
 
-    public static function parsePHPMailerAttachments($attachments = [])
+    public static function sanitizePHPMailerAttachments($attachments = [])
     {
         $attachments = wp_list_pluck($attachments, 0);
         $attachments = array_filter($attachments);

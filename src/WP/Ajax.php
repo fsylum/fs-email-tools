@@ -15,10 +15,9 @@ class Ajax implements Service
     public function getEmailLog()
     {
         $log = new Log(absint($_REQUEST['id']));
-
         $log->markAsRead();
+        $log->fetch();
 
-        $data = $log->fetch();
-        wp_send_json($data);
+        wp_send_json_success($log->toArray());
     }
 }
