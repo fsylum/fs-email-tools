@@ -185,3 +185,13 @@ body.tools_page_fs-email-tools .search-box {
     border-color: #dd823b;
     color: #fff;
 }
+
+#fs-email-tools-dialog-email-log-view {
+    .tab-pane {
+        padding: 10px;
+    }
+
+    pre {
+        margin: 0;
+    }
+}

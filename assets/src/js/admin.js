@@ -20,6 +20,27 @@
         });
     };
 
+    let initDialogTabs = function () {
+        let $visibleDialogs = $('.ui-dialog:visible');
+
+        $visibleDialogs.each(function () {
+            let $this  = $(this);
+            let dialog = $this.find('.ui-dialog-content').data('ui-dialog');
+
+            $this.find('.nav-tab').on('click', function (e) {
+                e.preventDefault();
+
+                var $tab = $(this);
+
+                $this.find('.nav-tab').not($tab).removeClass('nav-tab-active');
+                $tab.addClass('nav-tab-active');
+
+                $this.find('.tab-pane').addClass('hidden');
+                $($tab.attr('href')).removeClass('hidden');
+            });
+        });
+    };
+
     $(document).ready(function () {
         $('#fs-email-tools-reroute-status').on('change', function () {
             let isChecked = $(this).is(':checked');
@@ -93,16 +114,6 @@
 
         $(window).on('resize', resizeDialog);
 
-        var nl2br = function (str, isXhtml) {
-            if (typeof str === 'undefined' || str === null) {
-                return '';
-            }
-
-            const breakTag = (isXhtml || typeof isXhtml === 'undefined') ? '<br ' + '/>' : '<br>';
-
-            return (str + '').replace(/(\r\n|\n\r|\r|\n)/g, breakTag + '$1');
-        }
-
         $('#fs-email-tools-dialog-email-log-view').dialog({
             autoOpen: false,
             closeOnEscape: true,
@@ -120,22 +131,12 @@
                     id: $dialog.data('emailLogId')
                 })
                 .done(function (res) {
-                    var html = [];
+                    let template = wp.template('fs-email-tools-dialog-email-log-view-js');
 
-                    html.push('<a href="#">Show headers</a>');
-                    html.push('<pre>');
-                    html.push($.trim(res.headers));
-                    html.push('</pre>');
-                    html.push(res.message);
-                    html.push('<p><strong>Attachments</strong></p>');
-                    html.push('<ul>');
-                    html.push('<li><a href="#">basename1.pdf</a> (404 kB)</li>');
-                    html.push('<li><a href="#">basename2.pdf</a> (12 kB)</li>');
-                    html.push('<li><a href="#">basename3.pdf</a> (Not Found)</li>');
-                    html.push('</ul>');
-
-                    $dialog.html(html.join(''));
+                    $dialog.html(template(res));
                     resizeDialog();
+                    initDialogTabs();
+                    console.log(res);
                 })
                 .fail(function (res) {
                     $dialog.dialog('close');
