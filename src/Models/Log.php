@@ -11,11 +11,18 @@ class Log
     protected $id;
     protected $data = [];
 
-    public function __construct($id)
+    public function find($id)
     {
         $this->id = absint($id);
 
+        $this->fetch();
+
         return $this;
+    }
+
+    public function data()
+    {
+        return $this->data ?: [];
     }
 
     public function insertFromPHPMailer(PHPMailer $phpmailer)
@@ -51,7 +58,7 @@ class Log
 
         $table = $wpdb->prefix . Database::TABLE;
 
-        $this->data = $wpdb->get_row(
+        $data = $wpdb->get_row(
             $wpdb->prepare(
                 "SELECT id, recipients_to, recipients_cc, recipients_bcc, subject, message, attachments, headers, created_at FROM {$table} WHERE id = %d LIMIT 1",
                 $this->id
@@ -59,20 +66,49 @@ class Log
             ARRAY_A
         );
 
+        if ($data) {
+            foreach ([
+                'recipients_to',
+                'recipients_cc',
+                'recipients_bcc',
+                'attachments',
+            ] as $key) {
+                $data[$key] = array_values(maybe_unserialize($data[$key]) ?: []);
+            }
+
+            $data['attachments'] = $this->parseAttachmentData($data['attachments']);
+
+            $this->data = $data;
+        }
+
         return $this;
     }
 
-    public function toArray()
+    private function parseAttachmentData($attachments = [])
     {
-        $data = $this->data;
+        $data = [];
 
-        foreach ([
-            'recipients_to',
-            'recipients_cc',
-            'recipients_bcc',
-            'attachments',
-        ] as $key) {
-            $data[$key] = array_values(maybe_unserialize($data[$key]));
+        if (empty($attachments)) {
+            return $data;
+        }
+
+        foreach ($attachments as $index => $attachment) {
+            $data[$index] = [
+                'name' => basename($attachment),
+                'path' => $attachment,
+                'size' => file_exists($attachment) ? size_format(filesize($attachment)) : 'Not Found',
+                'url'  => wp_nonce_url(
+                    add_query_arg(
+                        [
+                            'action' => 'fs_email_tools_download_attachment',
+                            'id'     => absint($this->id),
+                            'index'  => absint($index),
+                        ],
+                        admin_url('admin.php')
+                    ),
+                    'fs-email-tools-download-attachment-nonce'
+                ),
+            ];
         }
 
         return $data;

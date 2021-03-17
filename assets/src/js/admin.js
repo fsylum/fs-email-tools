@@ -124,6 +124,10 @@
             modal: true,
             resizable: false,
             title: 'Email Preview',
+            position: {
+                my: 'center top+100',
+                at: 'center top',
+            },
             open: function (event, ui) {
                 var $dialog = $(this);
 
@@ -136,7 +140,6 @@
                     $dialog.html(template(res));
                     resizeDialog();
                     initDialogTabs();
-                    console.log(res);
                 })
                 .fail(function (res) {
                     $dialog.dialog('close');

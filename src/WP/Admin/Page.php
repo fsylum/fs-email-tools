@@ -19,6 +19,7 @@ class Page implements Service
         add_action('admin_post_fs_email_tools_delete_email_log', [$this, 'deleteEmailLog']);
         add_action('admin_notices', [$this, 'showNotice']);
         add_filter('set-screen-option', [$this, 'saveScreenOption'], 10, 3);
+        add_action('admin_action_fs_email_tools_download_attachment' , [$this, 'downloadAttachment']);
     }
 
     public function showNotice() {
@@ -162,7 +163,13 @@ class Page implements Service
             wp_die('Invalid request');
         }
 
-        $result   = (new Log(absint($_REQUEST['id'])))->delete();
+        $log = (new Log)->find(absint($_REQUEST['id']));
+
+        if (empty($log->data())) {
+            wp_die('Invalid email supplied');
+        }
+
+        $result   = $log->delete();
         $redirect = $_SERVER['HTTP_REFERER'];
 
         if (empty($redirect)) {
@@ -174,6 +181,31 @@ class Page implements Service
         ], $redirect);
 
         wp_safe_redirect($redirect);
+        exit;
+    }
+
+    public function downloadAttachment()
+    {
+        if (!wp_verify_nonce($_REQUEST['_wpnonce'], 'fs-email-tools-download-attachment-nonce')) {
+            wp_die('Invalid request');
+        }
+
+        $log = (new Log)->find(absint($_REQUEST['id']));
+
+        if (empty($data = $log->data())) {
+            wp_die('Invalid email supplied');
+        }
+
+        $attachment = $data['attachments'][absint($_REQUEST['index'])];
+
+        if (!$attachment) {
+            wp_die('Invalid attachment selected');
+        }
+
+        header('Content-Disposition: attachment; filename="' . $attachment['name'] . '"');
+        header('Content-Type:' . mime_content_type($attachment['path']));
+        header('Content-Length: ' . filesize($attachment['path']));
+        readfile($attachment['path']);
         exit;
     }
 }

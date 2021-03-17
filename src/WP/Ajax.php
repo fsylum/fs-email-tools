@@ -14,10 +14,15 @@ class Ajax implements Service
 
     public function getEmailLog()
     {
-        $log = new Log(absint($_REQUEST['id']));
+        $log = (new Log)->find(absint($_REQUEST['id']));
+
+        if (empty($log->data())) {
+            return;
+        }
+
         $log->markAsRead();
         $log->fetch();
 
-        wp_send_json_success($log->toArray());
+        wp_send_json_success($log->data());
     }
 }

@@ -16,12 +16,18 @@
         <pre>{{{ data.headers }}}</pre>
     </div>
     <div id="tab-email-log-attachments" class="tab-pane hidden">
-        <ul>
-            <li><a href="#">test.pdf</a> (404 kB)</li>
-            <li><a href="#">test.pdf</a> (404 kB)</li>
-            <li><a href="#">test.pdf</a> (404 kB)</li>
-            <li><a href="#">test.pdf</a> (404 kB)</li>
-            <li><a href="#">test.pdf</a> (404 kB)</li>
-        </ul>
+            <# if (data.attachments.length) { #>
+                <div class="notice notice-info">
+                    <p>Attachments are only logged when the email is first sent and might not be available at the time of viewing.</p>
+                </div>
+
+                <# _(data.attachments).each(function(attachment) { #>
+                    <a href="{{{ attachment.url }}}" class="button" target="_blank" rel="noopener noreferrer">{{{ attachment.name }}} ({{{ attachment.size }}})</a>
+                <# }) #>
+            <# } else { #>
+                <div class="notice notice-error">
+                    <p>There are no attachments for this email</p>
+                </div>
+            <# } #>
     </div>
 </script>

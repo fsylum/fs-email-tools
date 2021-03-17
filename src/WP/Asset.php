@@ -24,7 +24,7 @@ class Asset implements Service
         wp_enqueue_script(
             self::KEY . '-js-admin',
             FS_EMAIL_TOOLS_PLUGIN_URL . '/assets/dist/js/admin.js',
-            ['jquery', 'jquery-ui-datepicker', 'jquery-ui-dialog', 'wp-util'],
+            ['underscore', 'jquery', 'jquery-ui-datepicker', 'jquery-ui-dialog', 'wp-util'],
             wp_get_environment_type() === 'production' ? self::VERSION : time()
         );
 
