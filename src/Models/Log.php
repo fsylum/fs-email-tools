@@ -93,11 +93,14 @@ class Log
         }
 
         foreach ($attachments as $index => $attachment) {
+            $is_exists = file_exists($attachment);
+
             $data[$index] = [
-                'name' => basename($attachment),
-                'path' => $attachment,
-                'size' => file_exists($attachment) ? size_format(filesize($attachment)) : 'Not Found',
-                'url'  => wp_nonce_url(
+                'name'      => basename($attachment),
+                'path'      => $attachment,
+                'size'      => $is_exists ? size_format(filesize($attachment)) : 'Not Found',
+                'is_exists' => $is_exists,
+                'url'       => $is_exists ? wp_nonce_url(
                     add_query_arg(
                         [
                             'action' => 'fs_email_tools_download_attachment',
@@ -107,7 +110,7 @@ class Log
                         admin_url('admin.php')
                     ),
                     'fs-email-tools-download-attachment-nonce'
-                ),
+                ) : '#',
             ];
         }
 

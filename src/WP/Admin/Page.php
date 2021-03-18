@@ -202,6 +202,10 @@ class Page implements Service
             wp_die('Invalid attachment selected');
         }
 
+        if (!file_exists($attachment['path'])) {
+            wp_die('No attachment found');
+        }
+
         header('Content-Disposition: attachment; filename="' . $attachment['name'] . '"');
         header('Content-Type:' . mime_content_type($attachment['path']));
         header('Content-Length: ' . filesize($attachment['path']));

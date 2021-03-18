@@ -22,7 +22,7 @@
                 </div>
 
                 <# _(data.attachments).each(function(attachment) { #>
-                    <a href="{{{ attachment.url }}}" class="button" target="_blank" rel="noopener noreferrer">{{{ attachment.name }}} ({{{ attachment.size }}})</a>
+                    <a href="{{{ attachment.url }}}" class="button button-primary" target="_blank" rel="noopener noreferrer">{{{ attachment.name }}} ({{{ attachment.size }}})</a>
                 <# }) #>
             <# } else { #>
                 <div class="notice notice-error">
