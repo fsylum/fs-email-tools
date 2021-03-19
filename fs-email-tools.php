@@ -20,10 +20,13 @@ define('FS_EMAIL_TOOLS_PLUGIN_URL', untrailingslashit(plugin_dir_url(__FILE__)))
 define('FS_EMAIL_TOOLS_PLUGIN_PATH', untrailingslashit(plugin_dir_path(__FILE__)));
 
 register_activation_hook(__FILE__, [Fsylum\EmailTools\WP\Database::class, 'install']);
+register_activation_hook(__FILE__, [Fsylum\EmailTools\WP\Cron::class, 'install']);
+register_deactivation_hook(__FILE__, [Fsylum\EmailTools\WP\Cron::class, 'uninstall']);
 
 $plugin = new Fsylum\EmailTools\Plugin;
 
 $plugin->addService(new Fsylum\EmailTools\WP\Ajax);
+$plugin->addService(new Fsylum\EmailTools\WP\Cron);
 $plugin->addService(new Fsylum\EmailTools\WP\Mail);
 $plugin->addService(new Fsylum\EmailTools\WP\Asset);
 $plugin->addService(new Fsylum\EmailTools\WP\Admin\Page);
