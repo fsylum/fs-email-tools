@@ -117,11 +117,11 @@ class EmailLogsListTable extends WP_List_Table
         ob_start();
         ?>
             <div class="alignleft actions">
-                <label for="filter-start-date" class="screen-reader-text"><?php esc_html_e('Filter by start date', 'fs-email-tools'); ?></label>
-                <input type="text" id="filter-start-date" placeholder="<?php esc_html_e('Select a start date', 'fs-email-tools'); ?>" name="start_date" value="<?php echo esc_attr(sanitize_text_field($_GET['start_date'] ?? '')) ?>">
-                <label for="filter-end-date" class="screen-reader-text"><?php esc_html_e('Filter by end date', 'fs-email-tools'); ?></label>
-                <input type="text" id="filter-end-date" placeholder="<?php esc_html_e('Select an end date', 'fs-email-tools'); ?>" name="end_date" value="<?php echo esc_attr(sanitize_text_field($_GET['end_date'] ?? '')) ?>">
-                <input type="submit" class="button" value="<?php esc_html_e('Filter', 'fs-email-tools'); ?>">
+                <label for="filter-start-date" class="screen-reader-text"><?php _e('Filter by start date', 'fs-email-tools'); ?></label>
+                <input type="text" id="filter-start-date" placeholder="<?php _e('Select a start date', 'fs-email-tools'); ?>" name="start_date" value="<?php echo esc_attr(sanitize_text_field($_GET['start_date'] ?? '')) ?>">
+                <label for="filter-end-date" class="screen-reader-text"><?php _e('Filter by end date', 'fs-email-tools'); ?></label>
+                <input type="text" id="filter-end-date" placeholder="<?php _e('Select an end date', 'fs-email-tools'); ?>" name="end_date" value="<?php echo esc_attr(sanitize_text_field($_GET['end_date'] ?? '')) ?>">
+                <input type="submit" class="button" value="<?php _e('Filter', 'fs-email-tools'); ?>">
             </div>
         <?php
 
