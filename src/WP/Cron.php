@@ -41,9 +41,11 @@ class Cron implements Service
         $days     = absint($option['log']['keep_in_days']);
         $end_date = wp_date(get_option('date_format'), time() - ($days * DAY_IN_SECONDS));
         $logs     = (new LogFactory(['end_date' => $end_date], 1, 9999))->get();
-        $log_ids  = implode(',', array_map('absint', wp_list_pluck($logs['items'], 'id')));
+        $log_ids  = implode(',', array_map('absint', wp_list_pluck($logs['items'] ?: [], 'id')));
 
-        $wpdb->query("DELETE FROM $table WHERE id IN($log_ids)");
+        if (!empty($log_ids)) {
+            $wpdb->query("DELETE FROM $table WHERE id IN($log_ids)");
+        }
     }
 
     public static function install()

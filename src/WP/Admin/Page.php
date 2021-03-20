@@ -29,7 +29,18 @@ class Page implements Service
 
         ?>
             <div class="notice notice-info">
-                <p><?php _e( 'Email Tools plugin is currently active on this site. Please check the <a href="' . esc_url($this->tabUrl('settings')) . '">Settings</a> page and verify if this is intended.', 'sample-text-domain' ); ?></p>
+                <p>
+                    <?php
+                        /* translators: %s: URL to the Settings page */
+                        _e(
+                            sprintf(
+                                'Email Tools plugin is currently active on this site. Please check the <a href="%s">Settings</a> page and verify if this is intended.',
+                                esc_url($this->tabUrl('settings'))
+                            ),
+                            'fs-email-tools'
+                        );
+                    ?>
+                </p>
             </div>
         <?php
     }
@@ -52,16 +63,16 @@ class Page implements Service
         switch ($current_tab) {
             case 'settings':
                 if (isset($_GET['settings-updated']) && empty(get_settings_errors(Settings::KEY))) {
-                    add_settings_error(Settings::KEY, 'fs_email_tools_status', __( 'Settings saved.', 'fs-email-tools' ), 'updated');
+                    add_settings_error(Settings::KEY, 'fs_email_tools_status', __('Settings saved.', 'fs-email-tools'), 'updated');
                 }
                 break;
 
             case 'test-email':
                 if (isset($_GET['sent'])) {
                     if (sanitize_key($_GET['sent']) === 'yes') {
-                        add_settings_error(Settings::KEY, 'fs_email_tools_status', __( 'Test email is successfully sent.', 'fs-email-tools' ), 'updated');
+                        add_settings_error(Settings::KEY, 'fs_email_tools_status', __('Test email is successfully sent.', 'fs-email-tools'), 'updated');
                     } else {
-                        add_settings_error(Settings::KEY, 'fs_email_tools_status', __( 'Failed to send test email.', 'fs-email-tools' ));
+                        add_settings_error(Settings::KEY, 'fs_email_tools_status', __('Failed to send test email.', 'fs-email-tools'));
                     }
                 }
                 break;
@@ -69,9 +80,9 @@ class Page implements Service
             case 'email-logs':
                 if (isset($_GET['deleted'])) {
                     if (sanitize_key($_GET['deleted']) === 'yes') {
-                        add_settings_error(Settings::KEY, 'fs_email_tools_status', __( 'The selected email log(s) have been successfully deleted.', 'fs-email-tools' ), 'updated');
+                        add_settings_error(Settings::KEY, 'fs_email_tools_status', __('The selected email log(s) have been successfully deleted.', 'fs-email-tools'), 'updated');
                     } else {
-                        add_settings_error(Settings::KEY, 'fs_email_tools_status', __( 'Failed to delete selected email log(s). Please try again.', 'fs-email-tools' ));
+                        add_settings_error(Settings::KEY, 'fs_email_tools_status', __('Failed to delete selected email log(s). Please try again.', 'fs-email-tools'));
                     }
                 }
                 break;
@@ -117,9 +128,9 @@ class Page implements Service
     private function tabs()
     {
         return [
-            'settings'   => 'Settings',
-            'email-logs' => 'Email Logs',
-            'test-email' => 'Send Test Email',
+            'settings'   => __('Settings', 'fs-email-tools'),
+            'email-logs' => __('Email Logs', 'fs-email-tools'),
+            'test-email' => __('Send Test Email', 'fs-email-tools'),
         ];
     }
 
@@ -160,13 +171,13 @@ class Page implements Service
     public function deleteEmailLog()
     {
         if (!wp_verify_nonce($_REQUEST['_wpnonce'], 'fs-email-tools-delete-nonce')) {
-            wp_die('Invalid request');
+            wp_die(__('Invalid request', 'fs-email-tools'));
         }
 
         $log = (new Log)->find(absint($_REQUEST['id']));
 
         if (empty($log->data())) {
-            wp_die('Invalid email supplied');
+            wp_die(__('Invalid email supplied', 'fs-email-tools'));
         }
 
         $result   = $log->delete();
@@ -187,23 +198,23 @@ class Page implements Service
     public function downloadAttachment()
     {
         if (!wp_verify_nonce($_REQUEST['_wpnonce'], 'fs-email-tools-download-attachment-nonce')) {
-            wp_die('Invalid request');
+            wp_die(__('Invalid request', 'fs-email-tools'));
         }
 
         $log = (new Log)->find(absint($_REQUEST['id']));
 
         if (empty($data = $log->data())) {
-            wp_die('Invalid email supplied');
+            wp_die(__('Invalid email supplied', 'fs-email-tools'));
         }
 
         $attachment = $data['attachments'][absint($_REQUEST['index'])];
 
         if (!$attachment) {
-            wp_die('Invalid attachment selected');
+            wp_die(__('Invalid attachment selected', 'fs-email-tools'));
         }
 
         if (!file_exists($attachment['path'])) {
-            wp_die('No attachment found');
+            wp_die(__('No attachment found', 'fs-email-tools'));
         }
 
         header('Content-Disposition: attachment; filename="' . $attachment['name'] . '"');

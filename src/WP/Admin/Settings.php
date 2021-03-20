@@ -120,7 +120,7 @@ class Settings implements Service
 
         if ($data['reroute']['status']) {
             if (empty($data['reroute']['recipients'])) {
-                add_settings_error(self::KEY, 'fs_email_tools_missing_email', 'Please specify the recipient(s) email address for email rerouting');
+                add_settings_error(self::KEY, 'fs_email_tools_missing_email', __('Please specify the recipient(s) email address for email rerouting', 'fs-email-tools'));
             } else {
                 foreach ($data['reroute']['recipients'] as $recipient) {
                     if (!is_email($recipient)) {
@@ -132,21 +132,21 @@ class Settings implements Service
             }
 
             if ($data['reroute']['append']['status'] && !in_array($data['reroute']['append']['location'], ['subject', 'message'])) {
-                add_settings_error(self::KEY, 'fs_email_tools_invalid_append_location', 'Location must be either subject or message.');
+                add_settings_error(self::KEY, 'fs_email_tools_invalid_append_location', __('Location must be either subject or message.', 'fs-email-tools'));
 
                 $is_valid = false;
             }
         }
 
         if (!$data['log']['keep_indefinitely'] && filter_var($data['log']['keep_in_days'], FILTER_VALIDATE_INT) === false) {
-            add_settings_error(self::KEY, 'fs_email_tools_invalid_keep_in_days', 'Days must be a number');
+            add_settings_error(self::KEY, 'fs_email_tools_invalid_keep_in_days', __('Days must be a number', 'fs-email-tools'));
 
             $is_valid = false;
         }
 
         if ($data['bcc']['status']) {
             if (empty($data['bcc']['recipients'])) {
-                add_settings_error(self::KEY, 'fs_email_tools_missing_email', 'Please specify the recipient(s) email address for automatic BCC');
+                add_settings_error(self::KEY, 'fs_email_tools_missing_email', __('Please specify the recipient(s) email address for automatic BCC', 'fs-email-tools'));
             } else {
                 foreach ($data['bcc']['recipients'] as $recipient) {
                     if (!is_email($recipient)) {
@@ -179,7 +179,7 @@ class Settings implements Service
             <fieldset>
                 <label for="fs-email-tools-reroute-status">
                     <input name="<?php echo esc_attr(Option::KEY); ?>[reroute][status]" type="checkbox" id="fs-email-tools-reroute-status" value="1" <?php checked(true, $this->option['reroute']['status']); ?>>
-                    Reroute all outgoing emails to the specified recipients
+                    <?php esc_html_e('Reroute all outgoing emails to the specified recipients', 'fs-email-tools'); ?>
                 </label>
             </fieldset>
         <?php
@@ -191,7 +191,7 @@ class Settings implements Service
             <fieldset>
                 <p>
                     <label>
-                        Fill in the recipients to reroute all of outgoing emails to, one email address per line.
+                        <?php esc_html_e('Fill in the recipients to reroute all of outgoing emails to, one email address per line.', 'fs-email-tools'); ?>
                     </label>
                 </p>
                 <p>
@@ -199,11 +199,11 @@ class Settings implements Service
                 </p>
                     <label>
                         <input name="<?php echo esc_attr(Option::KEY); ?>[reroute][append][status]" type="checkbox" id="fs-email-tools-reroute-append-status" value="1" <?php checked(true, $this->option['reroute']['append']['status']); ?>>
-                        Also append original recipient(s) email address to the end of email
+                        <?php esc_html_e('Also append original recipient(s) email address to the end of email', 'fs-email-tools'); ?>
                     </label>
                     <select name="<?php echo esc_attr(Option::KEY); ?>[reroute][append][location]" id="fs-email-tools-reroute-append-location">
-                        <option value="subject" <?php selected('subject', $this->option['reroute']['append']['location']); ?>>subject</option>
-                        <option value="message" <?php selected('message', $this->option['reroute']['append']['location']); ?>>message</option>
+                        <option value="subject" <?php selected('subject', $this->option['reroute']['append']['location']); ?>><?php esc_html_e('subject', 'fs-email-tools'); ?></option>
+                        <option value="message" <?php selected('message', $this->option['reroute']['append']['location']); ?>><?php esc_html_e('message', 'fs-email-tools'); ?></option>
                     </select>
             </fieldset>
         <?php
@@ -212,7 +212,7 @@ class Settings implements Service
     public function displayDatabaseLogsSection(array $args = [])
     {
         ?>
-            <p id="<?php echo esc_attr($args['id']); ?>"><?php esc_html_e('Database logs feature allows you to store a copy of all outgoing emails in your database so that you can view it again at a later time.'); ?></p>
+            <p id="<?php echo esc_attr($args['id']); ?>"><?php esc_html_e('Database logs feature allows you to store a copy of all outgoing emails in your database so that you can view it again at a later time.', 'fs-email-tools'); ?></p>
         <?php
     }
 
@@ -222,7 +222,7 @@ class Settings implements Service
             <fieldset>
                 <label>
                     <input name="<?php echo esc_attr(Option::KEY); ?>[log][status]" type="checkbox" id="fs-email-tools-log-status" value="1" <?php checked(true, $this->option['log']['status']); ?>>
-                    Log all outgoing emails into the database
+                    <?php esc_html_e('Log all outgoing emails into the database', 'fs-email-tools'); ?>
                 </label>
             </fieldset>
         <?php
@@ -235,15 +235,18 @@ class Settings implements Service
                 <p>
                     <label>
                         <input name="<?php echo esc_attr(Option::KEY); ?>[log][keep_indefinitely]" type="radio" value="0" class="tog fs-email-tools-log-keep-indefinitely" <?php checked(false, $this->option['log']['keep_indefinitely']); ?>>
-                        Keep email logs for
+                        <?php esc_html_e('Keep email logs for', 'fs-email-tools'); ?>
                     </label>
                     <label>
                         <input name="<?php echo esc_attr(Option::KEY); ?>[log][keep_in_days]" type="text" id="fs-email-tools-log-keep-in-days" step="1" min="1" value="<?php echo esc_attr($this->option['log']['keep_in_days']); ?>" class="small-text">
-                        days.
+                        <?php esc_html_e('days.', 'fs-email-tools'); ?>
                     </label>
                 </p>
                 <p>
-                    <label><input name="<?php echo esc_attr(Option::KEY); ?>[log][keep_indefinitely]" type="radio" value="1" class="tog fs-email-tools-log-keep-indefinitely" <?php checked(true, $this->option['log']['keep_indefinitely']); ?>> Keep email logs indefinitely</label>
+                    <label>
+                        <input name="<?php echo esc_attr(Option::KEY); ?>[log][keep_indefinitely]" type="radio" value="1" class="tog fs-email-tools-log-keep-indefinitely" <?php checked(true, $this->option['log']['keep_indefinitely']); ?>>
+                        <?php esc_html_e('Keep email logs indefinitely', 'fs-email-tools'); ?>
+                    </label>
                 </p>
             </fieldset>
         <?php
@@ -252,7 +255,7 @@ class Settings implements Service
     public function displayAutomaticBCCSection(array $args = [])
     {
         ?>
-            <p id="<?php echo esc_attr($args['id']); ?>"><?php esc_html_e('This feature allows you to automatically set a list of email address as BCC for your outgoing emails.'); ?></p>
+            <p id="<?php echo esc_attr($args['id']); ?>"><?php esc_html_e('This feature allows you to automatically set a list of email address as BCC for your outgoing emails.', 'fs-email-tools'); ?></p>
         <?php
     }
 
@@ -262,7 +265,7 @@ class Settings implements Service
             <fieldset>
                 <label>
                     <input name="<?php echo esc_attr(Option::KEY); ?>[bcc][status]" type="checkbox" id="fs-email-tools-bcc-status" value="1" <?php checked(true, $this->option['bcc']['status']); ?>>
-                    Automatically add BCC to all outgoing emails
+                    <?php esc_html_e('Automatically add BCC to all outgoing emails', 'fs-email-tools'); ?>
                 </label>
             </fieldset>
         <?php
@@ -273,9 +276,7 @@ class Settings implements Service
         ?>
             <fieldset>
                 <p>
-                    <label>
-                        Fill in the recipients to be used as BCC.
-                    </label>
+                    <label><?php esc_html_e('Fill in the recipients to be used as BCC.', 'fs-email-tools'); ?></label>
                 </p>
                 <p>
                     <textarea name="<?php echo esc_attr(Option::KEY); ?>[bcc][recipients]" rows="10" id="fs-email-tools-bcc-recipients" class="regular-text" spellcheck="false"><?php echo implode("\r\n", $this->option['bcc']['recipients'] ?? []); ?></textarea>

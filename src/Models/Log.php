@@ -137,6 +137,11 @@ class Log
         $ids    = array_map('absint', $ids);
         $ids    = array_filter($ids);
         $ids    = array_unique($ids);
+
+        if (empty($ids)) {
+            return;
+        }
+
         $format = implode(', ', array_fill(0, count($ids), '%d'));
         $table  = $wpdb->prefix . Database::TABLE;
 

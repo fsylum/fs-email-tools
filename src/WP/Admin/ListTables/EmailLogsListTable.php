@@ -42,9 +42,9 @@ class EmailLogsListTable extends WP_List_Table
     {
         return [
             'cb'            => '<input type="checkbox">',
-            'subject'       => 'Subject',
-            'recipients_to' => 'Recipient(s)',
-            'created_at'    => 'Sent At',
+            'subject'       => __('Subject', 'fs-email-tools'),
+            'recipients_to' => __('Recipient(s)', 'fs-email-tools'),
+            'created_at'    => __('Sent At', 'fs-email-tools'),
         ];
     }
 
@@ -64,8 +64,8 @@ class EmailLogsListTable extends WP_List_Table
         ], admin_url('admin-post.php'));
 
         $actions = [
-            'view'   => sprintf('<a href="#" class="js-view-email-log" data-id="%d">View</a>', $item['id']),
-            'delete' => sprintf('<a href="%s" class="js-delete-email-log">Delete</a>', wp_nonce_url($delete_url, 'fs-email-tools-delete-nonce')),
+            'view'   => sprintf('<a href="#" class="js-view-email-log" data-id="%d">' . __('View', 'fs-email-tools') . '</a>', $item['id']),
+            'delete' => sprintf('<a href="%s" class="js-delete-email-log">' . __('Delete', 'fs-email-tools') . '</a>', wp_nonce_url($delete_url, 'fs-email-tools-delete-nonce')),
         ];
 
         $subject = sprintf(
@@ -104,7 +104,7 @@ class EmailLogsListTable extends WP_List_Table
     protected function get_bulk_actions()
     {
         return [
-            'delete' => 'Delete'
+            'delete' => __('Delete', 'fs-email-tools'),
         ];
     }
 
@@ -117,11 +117,11 @@ class EmailLogsListTable extends WP_List_Table
         ob_start();
         ?>
             <div class="alignleft actions">
-                <label for="filter-start-date" class="screen-reader-text">Filter by start date</label>
-                <input type="text" id="filter-start-date" placeholder="Select a start date" name="start_date" value="<?php echo esc_attr(sanitize_text_field($_GET['start_date'] ?? '')) ?>">
-                <label for="filter-end-date" class="screen-reader-text">Filter by end date</label>
-                <input type="text" id="filter-end-date" placeholder="Select an end date" name="end_date" value="<?php echo esc_attr(sanitize_text_field($_GET['end_date'] ?? '')) ?>">
-                <input type="submit" class="button" value="Filter">
+                <label for="filter-start-date" class="screen-reader-text"><?php esc_html_e('Filter by start date', 'fs-email-tools'); ?></label>
+                <input type="text" id="filter-start-date" placeholder="<?php esc_html_e('Select a start date', 'fs-email-tools'); ?>" name="start_date" value="<?php echo esc_attr(sanitize_text_field($_GET['start_date'] ?? '')) ?>">
+                <label for="filter-end-date" class="screen-reader-text"><?php esc_html_e('Filter by end date', 'fs-email-tools'); ?></label>
+                <input type="text" id="filter-end-date" placeholder="<?php esc_html_e('Select an end date', 'fs-email-tools'); ?>" name="end_date" value="<?php echo esc_attr(sanitize_text_field($_GET['end_date'] ?? '')) ?>">
+                <input type="submit" class="button" value="<?php esc_html_e('Filter', 'fs-email-tools'); ?>">
             </div>
         <?php
 
