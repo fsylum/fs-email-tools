@@ -15,7 +15,7 @@
                 <td><input name="subject" type="text" id="fs-email-tools-test-subject" value="<?php _e('Test email from', 'fs-email-tools'); ?> <?php echo esc_attr(get_bloginfo('name')); ?>" class="regular-text" required></td>
             </tr>
             <tr>
-                <th scope="row"><label for="fs-email-tools-test-message"><?php _e('YMessage', 'fs-email-tools'); ?></label></th>
+                <th scope="row"><label for="fs-email-tools-test-message"><?php _e('Message', 'fs-email-tools'); ?></label></th>
                 <td><textarea name="message" id="fs-email-tools-test-message" class="regular-text" rows="10" required><?php _e('It works!', 'fs-email-tools'); ?></textarea></td>
             </tr>
         </tbody>
