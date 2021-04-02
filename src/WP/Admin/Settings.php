@@ -195,7 +195,7 @@ class Settings implements Service
                     </label>
                 </p>
                 <p>
-                    <textarea name="<?php echo esc_attr(Option::KEY); ?>[reroute][recipients]" rows="10" id="fs-email-tools-reroute-recipients" class="regular-text" spellcheck="false"><?php echo implode("\r\n", $this->option['reroute']['recipients'] ?? []); ?></textarea>
+                    <textarea name="<?php echo esc_attr(Option::KEY); ?>[reroute][recipients]" rows="10" id="fs-email-tools-reroute-recipients" class="regular-text" spellcheck="false"><?php echo esc_textarea(implode("\r\n", $this->option['reroute']['recipients'] ?? [])); ?></textarea>
                 </p>
                     <label>
                         <input name="<?php echo esc_attr(Option::KEY); ?>[reroute][append][status]" type="checkbox" id="fs-email-tools-reroute-append-status" value="1" <?php checked(true, $this->option['reroute']['append']['status']); ?>>
@@ -279,7 +279,7 @@ class Settings implements Service
                     <label><?php _e('Fill in the recipients to be used as BCC.', 'fs-email-tools'); ?></label>
                 </p>
                 <p>
-                    <textarea name="<?php echo esc_attr(Option::KEY); ?>[bcc][recipients]" rows="10" id="fs-email-tools-bcc-recipients" class="regular-text" spellcheck="false"><?php echo implode("\r\n", $this->option['bcc']['recipients'] ?? []); ?></textarea>
+                    <textarea name="<?php echo esc_attr(Option::KEY); ?>[bcc][recipients]" rows="10" id="fs-email-tools-bcc-recipients" class="regular-text" spellcheck="false"><?php echo esc_textarea(implode("\r\n", $this->option['bcc']['recipients'] ?? [])); ?></textarea>
                 </p>
             </fieldset>
         <?php

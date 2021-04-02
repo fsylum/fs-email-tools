@@ -139,7 +139,7 @@ class EmailLogsListTable extends WP_List_Table
                 }
 
                 if (!empty($_REQUEST['ids'])) {
-                    $result = (new Log)->bulkDelete($_REQUEST['ids']);
+                    $result = (new Log)->bulkDelete(array_map('absint', $_REQUEST['ids']));
                 }
 
                 $redirect = add_query_arg([
