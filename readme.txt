@@ -1,6 +1,5 @@
 === FS Email Tools ===
 Contributors: fsylum
-Donate link: https://fsylum.net
 Tags: email, mail, developer tool
 Requires at least: 4.0
 Tested up to: 5.7

@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name:         Email Tools
- * Plugin URI:          https://github.com/fsylum/wp-email-tools
+ * Plugin URI:          https://github.com/fsylum/fs-email-tools
  * Description:         Collection of tools to interact with emails in WordPress including email rerouting, outgoing email logging to the database, and automatic BCC to specified email address.
  * Author:              Firdaus Zahari
  * Author URI:          https://fsylum.net
