@@ -20,6 +20,7 @@ class Page implements Service
         add_action('admin_notices', [$this, 'showNotice']);
         add_filter('set-screen-option', [$this, 'saveScreenOption'], 10, 3);
         add_action('admin_action_fs_email_tools_download_attachment' , [$this, 'downloadAttachment']);
+        add_filter('plugin_action_links_'  . FS_EMAIL_TOOLS_PLUGIN_BASENAME, [$this, 'addSettingsLink']);
     }
 
     public function showNotice() {
@@ -222,5 +223,16 @@ class Page implements Service
         header('Content-Length: ' . filesize($attachment['path']));
         readfile($attachment['path']);
         exit;
+    }
+
+    public function addSettingsLink($links)
+    {
+        $url = add_query_arg([
+            'page' => self::KEY,
+        ], admin_url('tools.php'));
+
+        $links[] = '<a href="'. esc_url($url) .'" target="_blank">' . __('Settings', 'fs-email-tools') . '</a>';
+
+        return $links;
     }
 }
