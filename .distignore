@@ -17,6 +17,7 @@ behat.yml
 bitbucket-pipelines.yml
 bin
 .circleci/config.yml
+assets/src
 composer.json
 composer.lock
 dependencies.yml
@@ -32,6 +33,7 @@ phpcs.xml
 .phpcs.xml.dist
 phpcs.xml.dist
 README.md
+webpack.mix.js
 webpack.config.js
 wp-cli.local.yml
 yarn.lock
