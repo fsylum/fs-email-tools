@@ -7,7 +7,7 @@
  * Author URI:          https://fsylum.net
  * License:             GPL v2 or later
  * License URI:         https://www.gnu.org/licenses/gpl-2.0.html
- * Version:             1.0.0
+ * Version:             1.1.1
  * Requires at least:   5.6
  * Requires PHP:        7.3
  */
