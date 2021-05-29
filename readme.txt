@@ -3,7 +3,7 @@ Contributors: fsylum
 Tags: email, mail, developer tool
 Requires at least: 4.0
 Tested up to: 5.7
-Stable tag: 1.1.1
+Stable tag: 1.1.2
 Requires PHP: 7.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -37,13 +37,17 @@ This section describes how to install the plugin and get it working.
 
 == Changelog ==
 
+**1.1.2**
+
+* [FIXED] Fixed Github Actions deploy script (unrelated to the actual plugin)
+
 **1.1.1**
 
 * [FIXED] Removed unneeded source files from the plugin
 
 **1.1.0**
 
-* [ADDED] Add link to the Settings page in the Plugins page
+* [ADDED] Added link to the Settings page in the Plugins page
 
 **1.0.0**
 
