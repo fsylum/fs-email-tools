@@ -34,3 +34,13 @@ This section describes how to install the plugin and get it working.
 2. Listing for the stored email logs in the database
 3. Preview of the stored email log
 4. UI to send test email
+
+== Changelog ==
+
+**1.1.0**
+
+* [ADDED] Add link to the Settings page in the Plugins page
+
+**1.0.0**
+
+* Initial release

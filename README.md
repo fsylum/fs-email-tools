@@ -1,4 +1,4 @@
-# Email Tools #
+# FS Email Tools #
 
 Collection of tools to interact with emails in WordPress including email rerouting, outgoing email logging to the database, and automatic BCC to specified email address.
 
@@ -19,3 +19,13 @@ This section describes how to install the plugin and get it working.
 1. Upload the plugin files to the `/wp-content/plugins/fs-email-tools` directory, or install the plugin through the WordPress plugins screen directly.
 2. Activate the plugin through the 'Plugins' screen in WordPress
 3. Use the Tools->Email Tools screen to configure the plugin
+
+## Changelog ##
+
+**1.1.0**
+
+* [ADDED] Add link to the Settings page in the Plugins page
+
+**1.0.0**
+
+* Initial release
