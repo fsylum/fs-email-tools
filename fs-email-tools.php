@@ -14,6 +14,7 @@
 
 require __DIR__ . '/vendor/autoload.php';
 
+define('FS_EMAIL_TOOLS_PLUGIN_BASENAME', plugin_basename(__FILE__));
 define('FS_EMAIL_TOOLS_PLUGIN_URL', untrailingslashit(plugin_dir_url(__FILE__)));
 define('FS_EMAIL_TOOLS_PLUGIN_PATH', untrailingslashit(plugin_dir_path(__FILE__)));
 
