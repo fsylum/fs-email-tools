@@ -22,6 +22,18 @@ This section describes how to install the plugin and get it working.
 
 ## Changelog ##
 
+**1.1.3**
+
+* [FIXED] Code cleanup
+
+**1.1.2**
+
+* [FIXED] Fixed Github Actions deploy script (unrelated to the actual plugin)
+
+**1.1.1**
+
+* [FIXED] Removed unneeded source files from the plugin
+
 **1.1.0**
 
 * [ADDED] Add link to the Settings page in the Plugins page

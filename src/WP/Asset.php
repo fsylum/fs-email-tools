@@ -7,8 +7,7 @@ use Fsylum\EmailTools\Contracts\Service;
 
 class Asset implements Service
 {
-    const KEY     = 'fs-email-tools-asset';
-    const VERSION = '0.1.0';
+    const KEY = 'fs-email-tools-asset';
 
     public function run()
     {
@@ -25,14 +24,14 @@ class Asset implements Service
             self::KEY . '-js-admin',
             FS_EMAIL_TOOLS_PLUGIN_URL . '/assets/dist/js/admin.js',
             ['underscore', 'jquery', 'jquery-ui-datepicker', 'jquery-ui-dialog', 'wp-util'],
-            wp_get_environment_type() === 'production' ? self::VERSION : time()
+            wp_get_environment_type() === 'production' ? FS_EMAIL_TOOLS_VERSION : time()
         );
 
         wp_enqueue_style(
             self::KEY . '-css-admin',
             FS_EMAIL_TOOLS_PLUGIN_URL . '/assets/dist/css/admin.css',
             ['wp-jquery-ui-dialog'],
-            wp_get_environment_type() === 'production' ? self::VERSION : time()
+            wp_get_environment_type() === 'production' ? FS_EMAIL_TOOLS_VERSION : time()
         );
     }
 }
