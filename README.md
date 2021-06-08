@@ -22,6 +22,10 @@ This section describes how to install the plugin and get it working.
 
 ## Changelog ##
 
+**1.2.0**
+
+* [FIXED] Fatal error when activating the plugin due to missing `vendor` directory
+
 **1.1.3**
 
 * [FIXED] Code cleanup
