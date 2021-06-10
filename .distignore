@@ -21,6 +21,9 @@ assets/src
 composer.json
 composer.lock
 dependencies.yml
+DOCKER_ENV
+docker_tag
+Dockerfile-php-build
 Gruntfile.js
 package.json
 package-lock.json
@@ -39,6 +42,7 @@ wp-cli.local.yml
 yarn.lock
 tests
 node_modules
+*.log
 *.sql
 *.tar.gz
 *.zip
