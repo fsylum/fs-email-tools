@@ -3,7 +3,7 @@ Contributors: fsylum
 Tags: email, mail, developer tool
 Requires at least: 4.0
 Tested up to: 5.7
-Stable tag: 1.2.1
+Stable tag: 1.2.2
 Requires PHP: 7.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -36,6 +36,10 @@ This section describes how to install the plugin and get it working.
 4. UI to send test email
 
 == Changelog ==
+
+**1.2.2**
+
+* [FIXED] Exclude Docker related files from the final plugin files
 
 **1.2.1**
 

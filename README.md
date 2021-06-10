@@ -22,6 +22,10 @@ This section describes how to install the plugin and get it working.
 
 ## Changelog ##
 
+**1.2.2**
+
+* [FIXED] Exclude Docker related files from the final plugin files
+
 **1.2.1**
 
 * [FIXED] Fixed Github Actions deploy script (unrelated to the actual plugin)
