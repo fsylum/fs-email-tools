@@ -21,16 +21,14 @@ class EmailLogsListTable extends WP_List_Table
             true
         );
 
-        $this->_column_headers = array($this->get_columns(), [], $this->get_sortable_columns());
+        $this->_column_headers = [$this->get_columns(), [], $this->get_sortable_columns()];
         $result                = (new LogFactory($_REQUEST, $this->get_pagenum(), absint($per_page)))->get();
         $this->items           = $result['items'];
 
-        $this->set_pagination_args(
-            array(
-                'total_items' => $result['total_items'],
-                'per_page'    => $result['per_page'],
-            )
-        );
+        $this->set_pagination_args([
+            'total_items' => $result['total_items'],
+            'per_page'    => $result['per_page'],
+        ]);
     }
 
     public function no_items()
