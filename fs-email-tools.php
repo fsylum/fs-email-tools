@@ -7,7 +7,7 @@
  * Author URI:          https://fsylum.net
  * License:             GPL v2 or later
  * License URI:         https://www.gnu.org/licenses/gpl-2.0.html
- * Version:             1.2.2
+ * Version:             1.2.3
  * Requires at least:   5.6
  * Requires PHP:        7.3
  */
@@ -17,7 +17,7 @@ require __DIR__ . '/vendor/autoload.php';
 define('FS_EMAIL_TOOLS_PLUGIN_BASENAME', plugin_basename(__FILE__));
 define('FS_EMAIL_TOOLS_PLUGIN_URL', untrailingslashit(plugin_dir_url(__FILE__)));
 define('FS_EMAIL_TOOLS_PLUGIN_PATH', untrailingslashit(plugin_dir_path(__FILE__)));
-define('FS_EMAIL_TOOLS_VERSION', '1.2.2');
+define('FS_EMAIL_TOOLS_VERSION', '1.2.3');
 
 register_activation_hook(__FILE__, [Fsylum\EmailTools\WP\Database::class, 'install']);
 register_activation_hook(__FILE__, [Fsylum\EmailTools\WP\Cron::class, 'install']);
