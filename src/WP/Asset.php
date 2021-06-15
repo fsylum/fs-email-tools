@@ -23,7 +23,7 @@ class Asset implements Service
         wp_enqueue_script(
             self::KEY . '-js-admin',
             FS_EMAIL_TOOLS_PLUGIN_URL . '/assets/dist/js/admin.js',
-            ['underscore', 'jquery', 'jquery-ui-datepicker', 'jquery-ui-dialog', 'wp-util'],
+            ['underscore', 'jquery', 'jquery-ui-datepicker', 'jquery-ui-dialog', 'wp-util', 'wp-i18n'],
             wp_get_environment_type() === 'production' ? FS_EMAIL_TOOLS_VERSION : time()
         );
 
@@ -33,5 +33,7 @@ class Asset implements Service
             ['wp-jquery-ui-dialog'],
             wp_get_environment_type() === 'production' ? FS_EMAIL_TOOLS_VERSION : time()
         );
+
+        wp_set_script_translations(self::KEY . '-js-admin', 'fs-email-tools');
     }
 }

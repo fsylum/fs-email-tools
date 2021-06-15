@@ -1,3 +1,5 @@
+const { __, _x, _n, _nx } = wp.i18n;
+
 (function ($) {
     // Set dialog width to 700px max, but make it responsive for lower screen resolution, modified from https://gist.github.com/jameswilson/869c0b7d66881e8f9c0e5f3dc8b33156
     let resizeDialog = function () {
@@ -81,7 +83,7 @@
         $('.js-delete-email-log').on('click', function (e) {
             e.preventDefault();
 
-            if (window.confirm('This email log will be permanently deleted and cannot be recovered. Are you sure?')) {
+            if (window.confirm(__('This email log will be permanently deleted and cannot be recovered. Are you sure?', 'fs-email-tools'))) {
                 window.location = this.href;
             };
         });
@@ -89,7 +91,7 @@
         $('#doaction, #doaction2').on('click', function (e) {
             e.preventDefault();
 
-            if (window.confirm('The selected email logs will be permanently deleted and cannot be recovered. Are you sure?')) {
+            if (window.confirm(__('The selected email logs will be permanently deleted and cannot be recovered. Are you sure?', 'fs-email-tools'))) {
                 $(this).closest('form').trigger('submit');
             };
         });
@@ -143,7 +145,7 @@
                 })
                 .fail(function (res) {
                     $dialog.dialog('close');
-                    alert('The email log cannot be retrieved. Please try again later.');
+                    alert(__('The email log cannot be retrieved. Please try again later.', 'fs-email-tools'));
                 });
             },
             close: function (event, ui) {
