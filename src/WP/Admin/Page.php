@@ -231,7 +231,7 @@ class Page implements Service
             'page' => self::KEY,
         ], admin_url('tools.php'));
 
-        $links[] = '<a href="'. esc_url($url) .'" target="_blank">' . __('Settings', 'fs-email-tools') . '</a>';
+        $links[] = '<a href="'. esc_url($url) .'">' . __('Settings', 'fs-email-tools') . '</a>';
 
         return $links;
     }

@@ -37,6 +37,10 @@ This section describes how to install the plugin and get it working.
 
 == Changelog ==
 
+**Unreleased**
+
+* [FIXED] Remove attribute that make Settings link to open in new tab
+
 **1.2.3**
 
 * [FIXED] Minor code formatting fix
