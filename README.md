@@ -25,6 +25,7 @@ This section describes how to install the plugin and get it working.
 **Unreleased**
 
 * [FIXED] Remove attribute that make Settings link to open in new tab
+* [FIXED] Simplify composer.json and package.json (unrelated to actual plugin)
 
 **1.2.3**
 
