@@ -111,7 +111,7 @@ class Settings implements Service
 
         // typecast status to boolean directly without validationg
         $data['reroute']['status']           = (bool) $data['reroute']['status'];
-        $data['reroute']['append']['status'] = (bool) $data['reroute']['append']['status'];
+        $data['reroute']['append']['status'] = array_key_exists('append', $data['reroute']) ? (bool) $data['reroute']['append']['status'] : false;
         $data['log']['status']               = (bool) $data['log']['status'];
         $data['log']['keep_indefinitely']    = (bool) $data['log']['keep_indefinitely'];
         $data['bcc']['status']               = (bool) $data['bcc']['status'];

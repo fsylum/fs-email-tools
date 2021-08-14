@@ -22,10 +22,11 @@ This section describes how to install the plugin and get it working.
 
 ## Changelog ##
 
-**Unreleased**
+**1.2.4**
 
 * [FIXED] Remove attribute that make Settings link to open in new tab
 * [FIXED] Simplify composer.json and package.json (unrelated to actual plugin)
+* [FIXED] Compatibility with WordPress 5.8
 
 **1.2.3**
 

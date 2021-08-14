@@ -2,8 +2,8 @@
 Contributors: fsylum
 Tags: email, mail, developer tool
 Requires at least: 4.0
-Tested up to: 5.7
-Stable tag: 1.2.3
+Tested up to: 5.8
+Stable tag: 1.2.4
 Requires PHP: 7.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -37,10 +37,11 @@ This section describes how to install the plugin and get it working.
 
 == Changelog ==
 
-**Unreleased**
+**1.2.4**
 
 * [FIXED] Remove attribute that make Settings link to open in new tab
 * [FIXED] Simplify composer.json and package.json (unrelated to actual plugin)
+* [FIXED] Compatibility with WordPress 5.8
 
 **1.2.3**
 
